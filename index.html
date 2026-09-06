@@ -1,0 +1,117 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Links &amp; Corrections &mdash; The Backtest Graveyard</title>
+<style>
+:root { color-scheme: light dark; --fg:#1a1a1a; --muted:#666; --bg:#fdfdfc;
+        --line:#ddd; --accent:#6b2020; }
+@media (prefers-color-scheme: dark) {
+  :root { --fg:#e8e8e8; --muted:#9a9a9a; --bg:#161616; --line:#333;
+          --accent:#d98a8a; } }
+* { box-sizing: border-box; }
+body { margin:0; padding:2rem 1.25rem 4rem; background:var(--bg); color:var(--fg);
+       font:16px/1.6 -apple-system,BlinkMacSystemFont,"Segoe UI",Helvetica,Arial,sans-serif; }
+main { max-width: 42rem; margin: 0 auto; }
+h1 { font-size:1.6rem; margin:0 0 .25rem; }
+.sub { color:var(--muted); margin:0 0 1.5rem; }
+.note { border-left:3px solid var(--accent); padding:.75rem 1rem; margin:1.5rem 0;
+        background:color-mix(in srgb, var(--accent) 7%, transparent); border-radius:0 4px 4px 0; }
+h2 { font-size:1.05rem; margin:2rem 0 .5rem; padding-bottom:.3rem;
+     border-bottom:1px solid var(--line); }
+ul { list-style:none; padding:0; margin:0; }
+li { padding:.45rem 0; border-bottom:1px solid var(--line); }
+li:last-child { border-bottom:0; }
+a { color:var(--accent); text-decoration:none; word-break:break-word; }
+a:hover { text-decoration:underline; }
+.cap { display:block; font-size:.9rem; color:var(--muted); }
+code { font-size:.88em; }
+footer { margin-top:3rem; padding-top:1rem; border-top:1px solid var(--line);
+         color:var(--muted); font-size:.85rem; }
+.dl { display:inline-block; margin:.5rem 0; padding:.6rem 1rem; border-radius:6px;
+      background:var(--accent); color:#fff; font-weight:600; }
+.dl:hover { text-decoration:none; opacity:.9; }
+.none { color:var(--muted); font-style:italic; }
+</style></head>
+<body><main>
+
+<h1>The Backtest Graveyard &mdash; Links &amp; Corrections</h1>
+<p class="sub">Every result file cited in the book, plus any corrections issued after
+publication. Book text current as of September 2026.</p>
+
+<div class="note">
+<strong>If a figure in the book looks wrong, check here before anything else.</strong>
+Corrections are published on this page, dated, with the original value shown alongside
+the corrected one. Nothing is silently amended.
+</div>
+
+<h2>The receipts</h2>
+<p>Code and result files behind every number in the book &mdash; the harnesses, the
+cost models, and the kill tests as reusable functions.</p>
+<a class="dl" href="https://github.com/backtest-graveyard/backtest-graveyard/tree/main/book">Browse the receipts repository</a>
+<p class="cap">Start with <code>book/killtests/killtests.py</code>. Standard library only,
+no dependencies. It is the test that killed six of the fourteen strategies in this
+book, after conventional metrics had cleared them.</p>
+
+<h2>Corrections</h2>
+<ul id="corrections">
+<li class="none">No corrections issued yet. This section will list them in date order,
+each showing the chapter, the original figure, the corrected figure, and what caused
+the error.</li>
+</ul>
+
+<h2>Known limitations, disclosed in the book</h2>
+<ul>
+<li>One figure has no reproducible source &mdash; the honest common-window MAR of 1.18
+came from a script that no longer exists.<span class="cap">Flagged in Chapter 22 and
+Appendix E.</span></li>
+<li>Residual look-ahead in the gap screen inflates Chapter 11's rebuilt figures by an
+unknown amount.<span class="cap">Accepted and disclosed rather than fixed; the strategy
+is rejected on concentration regardless.</span></li>
+<li>Universe survivorship is only partially corrected in the value screener.<span
+class="cap">The five-year filing-history filter removes recent listings, not
+established companies added to an index mid-window.</span></li>
+<li>Some samples are small and say so &mdash; the MACD probe is 22 days and 36
+trades.</li>
+</ul>
+
+<h2>Chapter &rarr; source file</h2>
+<ul>
+<li><strong>Ch 4, 11, 24</strong> — Gap trader — headline MAR 1.56, top-3 = 92%<span class="cap"><code>FULL_UNIVERSE_VERDICT_2026_06_03.md</code></span></li>
+<li><strong>Ch 7, 11</strong> — Gap trader — parity re-audit, 42% screen miss, MAR 97 bug<span class="cap"><code>PARITY_REAUDIT_TRACK1_RESULTS_2026_06_03.md</code></span></li>
+<li><strong>Ch 3, 4, 15</strong> — Pairs trading / PCA residual book — fail→pass→fail<span class="cap"><code>STATARB_POSTMORTEM_2026_07_19.md</code></span></li>
+<li><strong>Ch 4, 5, 19</strong> — Value screener — 0.61→0.47, COIN artifact<span class="cap"><code>BUFFETT_BACKTEST_RESULTS_2026_07_23.md</code></span></li>
+<li><strong>Ch 4, 16</strong> — Cross-sectional momentum — incl. crypto-removal sweep<span class="cap"><code>XSMOM_RESULTS.md</code></span></li>
+<li><strong>Ch 10, 22</strong> — Kronos vs EWMA vs incumbent — QLIKE table<span class="cap"><code>KRONOS_FOUNDATION_MODEL_EVAL_2026_07_09.md</code></span></li>
+<li><strong>Ch 9</strong> — VIX cheat sheet — SPY and QQQ variants, 2000–2025<span class="cap"><code>ASKLIVERMORE_VIX_CHEATSHEET_EVAL_2026_07_09.md</code></span></li>
+<li><strong>Ch 3, 13</strong> — Volume/red-green reversals — cost curve + strip ladder<span class="cap"><code>VOLUME_REVERSAL_PROBE_RESULTS.md</code></span></li>
+<li><strong>Ch 21</strong> — Equities MR dip-buy — standalone rejection<span class="cap"><code>MR_DIPBUY_RESULTS.md</code></span></li>
+<li><strong>Ch 21</strong> — Rates carry + trend pilot<span class="cap"><code>RATES_CARRY_PILOT_RESULTS.md</code></span></li>
+<li><strong>Ch 4, 5, 12</strong> — Overnight / earnings-night premium<span class="cap"><code>OVERNIGHT_EFFECT_EARNINGS_NIGHT_RESULTS_2026_08_23.md</code></span></li>
+<li><strong>Ch 4, 14</strong> — MACD + RVOL — 22-day sweep<span class="cap"><code>SDOT_MULTIDAY_SWEEP_2026_06_26.md</code></span></li>
+<li><strong>Ch 17</strong> — HMM regime paper — evidence review<span class="cap"><code>HMM_REGIME_FACTOR_PAPER_EVAL_2026_07_20.md</code></span></li>
+<li><strong>Ch 18</strong> — GEX / dealer gamma — mechanics review<span class="cap"><code>GEX_DEALER_HEDGING_STRATEGY_EVAL_2026_07_08.md</code></span></li>
+<li><strong>Ch 8</strong> — RenTec 51% — mechanics audit<span class="cap"><code>RENTEC_51PCT_MATH_STRATEGY_EVAL_2026_07_08.md</code></span></li>
+<li><strong>Ch 2, 20</strong> — Fractional Kelly vs vol-target, matched exposure<span class="cap"><code>KELLY_SIZING_FINDINGS_2026_07_08.md</code></span></li>
+<li><strong>Ch 6, 20</strong> — Regime-window ensemble — OOS decay<span class="cap"><code>REGIME_ENSEMBLE_FINDINGS_2026_07_08.md</code></span></li>
+<li><strong>Ch 2, 22</strong> — Survivor grade + ragged-window correction<span class="cap"><code>MARKOV_GRADE_RESULTS.md / grade_rerun.txt</code></span></li>
+<li><strong>Ch 21</strong> — Overlay carry decomposition (4% vs 0% carry)<span class="cap"><code>MR_OVERLAY_CARRY_DECOMPOSITION_2026_09_05.md</code></span></li>
+<li><strong>Ch 22</strong> — DCA + dip-buy accumulation<span class="cap"><code>VTI_DCA_DIP_BACKTEST.md / QQQM_EMA_TRAIL_BACKTEST.md</code></span></li>
+</ul>
+
+<h2>The channel</h2>
+<p>Several of these teardowns exist as videos, with the same verdicts.</p>
+<ul>
+<li><a href="https://www.youtube.com/@TheBacktestGraveyard">The Backtest Graveyard on YouTube</a></li>
+</ul>
+
+<h2>Found an error?</h2>
+<p>Open an issue on the <a href="https://github.com/backtest-graveyard/backtest-graveyard/issues">receipts repository</a> with the run date and parameters you used.
+I would rather be corrected in public than cited incorrectly, and corrections appear on
+this page.</p>
+
+<footer>
+Nothing on this page or in the book is financial advice. The author holds no
+professional license and is not registered with any regulatory body. All results are
+historical simulations; simulations are not predictions.
+</footer>
+</main></body></html>
