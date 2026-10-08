@@ -1,0 +1,95 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Privacy Policy &mdash; The Backtest Graveyard</title>
+<style>
+:root { color-scheme: light dark; --fg:#1a1a1a; --muted:#666; --bg:#fdfdfc;
+        --line:#ddd; --accent:#6b2020; }
+@media (prefers-color-scheme: dark) {
+  :root { --fg:#e8e8e8; --muted:#9a9a9a; --bg:#161616; --line:#333;
+          --accent:#d98a8a; } }
+* { box-sizing: border-box; }
+body { margin:0; padding:2rem 1.25rem 4rem; background:var(--bg); color:var(--fg);
+       font:16px/1.6 -apple-system,BlinkMacSystemFont,"Segoe UI",Helvetica,Arial,sans-serif; }
+main { max-width: 42rem; margin: 0 auto; }
+h1 { font-size:1.6rem; margin:0 0 .25rem; }
+.sub { color:var(--muted); margin:0 0 1.5rem; }
+.note { border-left:3px solid var(--accent); padding:.75rem 1rem; margin:1.5rem 0;
+        background:color-mix(in srgb, var(--accent) 7%, transparent); border-radius:0 4px 4px 0; }
+h2 { font-size:1.05rem; margin:2rem 0 .5rem; padding-bottom:.3rem;
+     border-bottom:1px solid var(--line); }
+ul { list-style:none; padding:0; margin:0; }
+li { padding:.45rem 0; border-bottom:1px solid var(--line); }
+li:last-child { border-bottom:0; }
+a { color:var(--accent); text-decoration:none; word-break:break-word; }
+a:hover { text-decoration:underline; }
+.cap { display:block; font-size:.9rem; color:var(--muted); }
+code { font-size:.88em; }
+footer { margin-top:3rem; padding-top:1rem; border-top:1px solid var(--line);
+         color:var(--muted); font-size:.85rem; }
+.dl { display:inline-block; margin:.5rem 0; padding:.6rem 1rem; border-radius:6px;
+      background:var(--accent); color:#fff; font-weight:600; }
+.dl:hover { text-decoration:none; opacity:.9; }
+.none { color:var(--muted); font-style:italic; }
+</style>
+</head><body><main>
+<h1>Privacy policy</h1>
+<p class="sub">The Backtest Graveyard &mdash; last updated 8 October 2026</p>
+<div class="note">
+<strong>Short version:</strong> &ldquo;Backtest Graveyard Uploader&rdquo; is a private command-line
+tool the channel owner runs on his own computer to publish videos to his own YouTube
+channel. It has no users other than its author, no server, and it collects nothing
+from anybody.
+</div>
+
+<h2>What this page covers</h2>
+<p>This policy describes &ldquo;Backtest Graveyard Uploader&rdquo;, an application registered with
+Google so that it can call the YouTube Data API. It does not describe the YouTube
+channel itself, which is governed by YouTube&rsquo;s own terms.</p>
+
+<h2>What the application does</h2>
+<p>It uploads episode files, sets titles, descriptions, tags, thumbnails, caption tracks
+and playlist membership on a single YouTube channel: the one owned by the person running
+it. It is run by hand from a terminal and is not offered to, installed by, or usable by
+anyone else.</p>
+
+<h2>What data it touches</h2>
+<ul>
+<li><strong>Google account data.</strong> After the author signs in and grants access, the
+application receives an OAuth token permitting it to manage his own YouTube channel. The
+token is stored only in a file on his own computer and is never transmitted anywhere
+except to Google.</li>
+<li><strong>Video and caption files.</strong> Episode media and subtitle files are sent to
+YouTube in order to publish them. That is the entire purpose of the tool.</li>
+<li><strong>Nothing from viewers.</strong> The application never reads viewer data, comments,
+messages, analytics or personal information about any other person.</li>
+</ul>
+
+<h2>What it does not do</h2>
+<ul>
+<li>It has no servers, no database and no hosted component.</li>
+<li>It does not sell, share, transfer or disclose data to any third party.</li>
+<li>It contains no analytics, telemetry, advertising or tracking of any kind.</li>
+<li>It does not use Google user data to develop, improve or train any
+    artificial-intelligence or machine-learning model.</li>
+</ul>
+
+<h2>Google API Services User Data Policy</h2>
+<p>Use of information received from Google APIs adheres to the
+<a href="https://developers.google.com/terms/api-services-user-data-policy">Google API Services
+User Data Policy</a>, including its Limited Use requirements.</p>
+
+<h2>Retention and revocation</h2>
+<p>The stored token lives on one computer and is deleted whenever the author deletes the
+file. Access can be withdrawn at any time from the
+<a href="https://myaccount.google.com/permissions">Google account permissions page</a>, which
+immediately and permanently ends the application&rsquo;s access.</p>
+
+<h2>Questions</h2>
+<p>Open an issue on the
+<a href="https://github.com/backtest-graveyard/backtest-graveyard/issues">receipts repository</a>.</p>
+<footer>
+<a href="/">Links &amp; corrections</a> &middot;
+<a href="https://www.youtube.com/@TheBacktestGraveyard">The Backtest Graveyard on YouTube</a>
+</footer>
+</main></body></html>
