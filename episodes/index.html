@@ -1,0 +1,95 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Trading Strategy Backtests, Sorted by Verdict | The Backtest Graveyard</title>
+<meta name="description" content="20 trading strategies backtested on real data, each with a verdict: golden cross, TQQQ, RSI 2, covered calls, sell in May and more. Receipts included.">
+<link rel="canonical" href="https://backtest-graveyard.github.io/episodes/">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Trading Strategy Backtests, Sorted by Verdict | The Backtest Graveyard">
+<meta property="og:description" content="20 trading strategies backtested on real data, each with a verdict: golden cross, TQQQ, RSI 2, covered calls, sell in May and more. Receipts included.">
+<meta property="og:url" content="https://backtest-graveyard.github.io/episodes/">
+<style>
+:root { color-scheme: light dark; --fg:#1a1a1a; --muted:#666; --bg:#fdfdfc;
+        --line:#ddd; --accent:#6b2020; }
+@media (prefers-color-scheme: dark) {
+  :root { --fg:#e8e8e8; --muted:#9a9a9a; --bg:#161616; --line:#333;
+          --accent:#d98a8a; } }
+* { box-sizing: border-box; }
+body { margin:0; padding:2rem 1.25rem 4rem; background:var(--bg); color:var(--fg);
+       font:16px/1.6 -apple-system,BlinkMacSystemFont,"Segoe UI",Helvetica,Arial,sans-serif; }
+main { max-width: 42rem; margin: 0 auto; }
+h1 { font-size:1.6rem; line-height:1.25; margin:0 0 .5rem; }
+.sub { color:var(--muted); margin:0 0 1.5rem; }
+.crumb { font-size:.9rem; margin:0 0 1rem; }
+.stamp { display:inline-block; margin:.25rem 0 1.25rem; padding:.3rem .8rem; border:3px solid var(--accent);
+         color:var(--accent); font-weight:800; letter-spacing:.06em; transform:rotate(-2deg);
+         border-radius:4px; }
+h2 { font-size:1.05rem; margin:2rem 0 .5rem; padding-bottom:.3rem;
+     border-bottom:1px solid var(--line); }
+ul { list-style:none; padding:0; margin:0; }
+li { padding:.45rem 0; border-bottom:1px solid var(--line); }
+li:last-child { border-bottom:0; }
+a { color:var(--accent); text-decoration:none; word-break:break-word; }
+a:hover { text-decoration:underline; }
+.cap { display:block; font-size:.9rem; color:var(--muted); }
+figure { margin:1.5rem 0; }
+figure img { display:block; width:100%; height:auto; border-radius:4px; background:#1b1b1b; }
+.video { position:relative; aspect-ratio:16/9; margin:1.5rem 0; background:#000; border-radius:4px; overflow:hidden; }
+.video iframe { position:absolute; inset:0; width:100%; height:100%; border:0; }
+.dl { display:inline-block; margin:.5rem 0; padding:.6rem 1rem; border-radius:6px;
+      background:var(--accent); color:#fff; font-weight:600; }
+.dl:hover { text-decoration:none; opacity:.9; }
+.signup { border:1px solid var(--line); border-radius:6px; padding:1rem; margin:2rem 0; }
+.signup p { margin:0 0 .6rem; }
+.signup form { display:flex; gap:.5rem; flex-wrap:wrap; }
+.signup input[type=email] { flex:1 1 14rem; padding:.55rem .7rem; font:inherit; color:var(--fg);
+      background:var(--bg); border:1px solid var(--line); border-radius:6px; }
+.signup button { padding:.55rem 1rem; font:inherit; font-weight:600; color:#fff; background:var(--accent);
+      border:0; border-radius:6px; cursor:pointer; }
+footer { margin-top:3rem; padding-top:1rem; border-top:1px solid var(--line);
+         color:var(--muted); font-size:.85rem; }
+</style></head>
+<body><main>
+<p class="crumb"><a href="/">&larr; Links &amp; corrections</a></p>
+<h1>Every Strategy We Backtested, Sorted by Verdict</h1>
+<p class="sub">One page per aired episode of <a href="https://www.youtube.com/@TheBacktestGraveyard">The Backtest Graveyard</a>: the claim,
+the test, the number that decided it, and the code behind it.</p>
+
+<h2>Dead (11)</h2>
+<p class="cap">The edge was not there, or did not survive costs.</p>
+<ul>
+<li><a href="/buy-at-close-sell-at-open-overnight-strategy/">Does Buy at Close, Sell at Open Work? The Overnight Effect, Tested</a><span class="cap">Verdict: DEAD.</span></li>
+<li><a href="/does-gap-and-go-work/">Does the Gap and Go Strategy Work? 537 Trades Tested</a><span class="cap">Verdict: DEAD.</span></li>
+<li><a href="/does-the-kelly-criterion-work/">Does the Kelly Criterion Work for Position Sizing? Tested on a Trading Bot</a><span class="cap">Verdict: WORSE.</span></li>
+<li><a href="/renaissance-medallion-51-percent-win-rate/">Is a 51% Win Rate Enough? The Renaissance Medallion Math, Tested</a><span class="cap">Verdict: NOT AN EDGE.</span></li>
+<li><a href="/can-ai-forecast-volatility-kronos-vs-ewma/">Can an AI Model Forecast Volatility? Kronos vs a 1990s Formula</a><span class="cap">Verdict: BEATEN BY A FORMULA.</span></li>
+<li><a href="/does-buying-the-dip-work/">Does Buying the Dip Work? 5 Years Against Doing Nothing</a><span class="cap">Verdict: BEATEN BY DOING NOTHING.</span></li>
+<li><a href="/does-the-macd-volume-strategy-work/">Does a MACD Volume Filter Work? 6 Years Tested</a><span class="cap">Verdict: A THROTTLE, NOT AN EDGE.</span></li>
+<li><a href="/is-tqqq-a-good-long-term-investment/">Is TQQQ a Good Long-Term Investment? 10 Years Tested</a><span class="cap">Verdict: WORSE RIDE.</span></li>
+<li><a href="/does-the-rsi-2-strategy-work/">Does the RSI 2 Strategy Work? A 67% Win Rate, Tested</a><span class="cap">Verdict: NOT AN EDGE.</span></li>
+<li><a href="/does-momentum-investing-work/">Does Momentum Investing Work? 16 Years Tested</a><span class="cap">Verdict: JUST BETA.</span></li>
+<li><a href="/does-hfea-work/">Does HFEA (55% UPRO, 45% TMF) Work? 60 Years Tested</a><span class="cap">Verdict: THE HEDGE BROKE.</span></li>
+</ul>
+<h2>Half-true (8)</h2>
+<p class="cap">Something real, but not the way it is sold.</p>
+<ul>
+<li><a href="/does-gex-gamma-exposure-work/">Does GEX (Gamma Exposure) Predict the Market? The Viral Claim, Tested</a><span class="cap">Verdict: HALF-REAL.</span></li>
+<li><a href="/does-stat-arb-work-for-retail-traders/">Does Statistical Arbitrage Work for Retail Traders? Tested</a><span class="cap">Verdict: NOT AT RETAIL.</span></li>
+<li><a href="/does-the-vix-trading-strategy-work/">Does Buying When the VIX Tops 35 Work? 25 Years Tested</a><span class="cap">Verdict: HALF-TRUE.</span></li>
+<li><a href="/dollar-cost-averaging-vs-lump-sum/">Dollar-Cost Averaging vs Lump Sum: Which Wins? 100 Years of Data</a><span class="cap">Verdict: SAFER, NOT RICHER.</span></li>
+<li><a href="/does-the-golden-cross-work/">Does the Golden Cross Work? 100 Years of Data</a><span class="cap">Verdict: JUST A SEATBELT.</span></li>
+<li><a href="/are-covered-call-etfs-worth-it/">Are Covered Call ETFs Like QYLD and JEPI Worth It? Tested</a><span class="cap">Verdict: YOUR OWN MONEY.</span></li>
+<li><a href="/does-sell-in-may-and-go-away-work/">Does “Sell in May and Go Away” Work? 100 Years of Data</a><span class="cap">Verdict: STAY IN MAY.</span></li>
+<li><a href="/4-hour-vs-daily-chart-crypto/">Is the 4-Hour Chart Better Than the Daily for Crypto? 5 Years Tested</a><span class="cap">Verdict: REVERSED.</span></li>
+</ul>
+<h2>Method (1)</h2>
+<p class="cap">How to tell whether a backtest means anything.</p>
+<ul>
+<li><a href="/how-much-backtesting-is-enough/">How Much Backtesting Is Enough? 11 Strategies Tested</a><span class="cap">Verdict: NOT THE QUESTION.</span></li>
+</ul>
+<footer>
+Nothing on this site is financial advice. All results are historical simulations;
+simulations are not predictions. <a href="/">Links &amp; corrections</a> &middot;
+<a href="/episodes/">All episodes</a> &middot; <a href="/privacy.html">Privacy</a>
+</footer>
+</main></body></html>

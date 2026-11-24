@@ -1,0 +1,248 @@
+{
+ "ep01_overnight_effect": {
+  "summary": "A viral post claimed that buying Micron at every close and selling at every open returns +138,330,342%. The split is real: from 2016 to 2026-08, MU gained +6,660% overnight versus +6.0% intraday. Trading it is another matter. At 5 bps per round trip, 2,674 days of daily trading multiplies terminal equity by about 0.26, and holding only across earnings nights leaves MU at +0.7%/yr once the 5 best of 42 nights are dropped. A point-in-time universe of the top 20 names returned +2.0% CAGR with a MAR of 0.07.",
+  "meta": "The overnight effect is real: MU made +6,660% overnight vs +6.0% intraday. Costs and an honest universe kill it, with a MAR of 0.07. Verdict: DEAD.",
+  "source_lines": [
+   "returns +138,330,342%",
+   "| MU   | +6,660% | +6.0%  | +7,067% |",
+   "At 5 bps per round trip, 2,674 days of daily trading multiplies terminal equity by ~0.26",
+   "| **Drop 5 best nights** | **+0.7%/yr** | **+4.1%/yr** |",
+   "| **TOP-20 (primary)** | **+2.0%** | **0.07** |"
+  ]
+ },
+ "ep02_gap_and_go": {
+  "summary": "Gap-and-go momentum was tested on every US stock from 2025-09-11 to 2026-04-17: a gap of 10% or more, price $2-$20, float under 50M and RVOL of 5x or more. The headline looks fine at +$12,505, +36.6R and a 44% win rate over 537 trades. The top 3 trades were 92% of all profit, and removing the top 5 turns the total to -14.7R. On realistic fills the as-shipped version ran about -33% annualized. The one read that held up was skipping serial diluters, worth about +0.15R per trade.",
+  "meta": "Gap-and-go over 537 trades: the top 3 were 92% of profit and dropping the top 5 leaves -14.7R. Real fills: about -33% a year. Verdict: DEAD.",
+  "source_lines": [
+   "gap >= 10%, price $2-$20, float < 50M, RVOL >= 5x",
+   "+$12,505 over the window, +36.6R, 44% win rate",
+   "minus top 3 | +3.0R - the top 3 are 92% of all profit",
+   "minus top 5 | **-14.7R** - goes negative",
+   "As-shipped | realistic | **~-33%**",
+   "Skipping the serial diluters is worth ~**+0.15R per trade**"
+  ]
+ },
+ "ep03_kelly_sizing": {
+  "summary": "The Kelly criterion replaced constant-risk sizing on a working paper-traded bot, with the signal untouched and every variant matched to the same average gross exposure. Over 5 years, constant-risk sizing posted a MAR of 2.05 and a max drawdown of -6.2%. Quarter, half and full Kelly scored MAR 1.73, 1.52 and 1.42, with the drawdown deepening to -8.5% at full strength. Kelly's one win was a smoother ride, with Sortino rising from 1.96 to 2.20 at quarter-Kelly. The unmatched 'double' (+416% vs +196%) came from running roughly 2x the average exposure.",
+  "meta": "Matched for exposure, Kelly sizing cut MAR from 2.05 to 1.42 at full strength and deepened the drawdown to -8.5%. Verdict: WORSE than constant risk.",
+  "source_lines": [
+   "| Constant-risk (vol-target) | 0.35 | +51.2% | **2.05** | 1.96 | -6.2% |",
+   "| Kelly x0.25 (quarter) | 0.49 | +56.2% | 1.73 | **2.20** | -8.0% |",
+   "| Kelly x0.50 (half) | 0.54 | +50.6% | 1.52 | 2.07 | -8.3% |",
+   "| Kelly x1.00 (full) | 0.58 | +47.6% | 1.42 | 2.05 | -8.5% |",
+   "full Kelly returned **+416%** vs **+196%** ... roughly **2x the average exposure** (0.80 vs 0.38)"
+  ]
+ },
+ "rentec_51pct": {
+  "summary": "A viral post (about 1.28M views) argued that a 51% win rate plus Expected Value, Kelly and the Law of Large Numbers adds up to $100 billion, citing Renaissance's Medallion Fund. The math is real: at 50.75% with symmetric payoffs the gross edge is about 1.5% of stake per trade. But the three formulas only size and count bets; they create no edge, and the signal itself is what the post leaves out. Medallion caps outside AUM at about $10B because the edge does not scale, and a 1.5% edge survives only at single-digit basis-point costs per side. Applied to an edge that is not there, full Kelly just loses money faster.",
+  "meta": "51% win rate to $100 billion? EV, Kelly and the law of large numbers only size bets; a 1.5% edge needs a real signal first. Verdict: NOT AN EDGE.",
+  "source_lines": [
+   "A post went viral (June 2026, ~1.28M views)",
+   "At p = 50.75% with symmetric payoffs the gross edge is ~ **1.5% of stake per trade**",
+   "Add all three together and they create **exactly zero edge.**",
+   "Medallion **caps outside AUM at ~$10B**",
+   "all-in costs ... at **single-digit basis points per side.**"
+  ]
+ },
+ "gex_dealer_hedging": {
+  "summary": "A viral thread claimed GEX (dealer gamma exposure) pins price to one level 73% of the time in the first 45 minutes, and that it turned $4,200 into $19,800 in six months. The regime read is real and documented: positive dealer gamma tends toward quiet days and negative toward wild ones, with the thread's own figure at about 2.8x the range on negative-GEX days. The 73% magnet rests on about 60 days of data, and end-of-day open interest misses same-day options, now over 50% of SPX options volume. The +371% in six months fits leverage and survivorship, not a delta-neutral gamma book that a $4,000 account cannot run. A realistic vol-regime overlay plausibly earns a Sharpe of about 0.7-1.3, likely 0.5-0.9 net for a retail operator.",
+  "meta": "GEX reads quiet vs wild days (about 2.8x the range on negative gamma), but the 73% price magnet rests on about 60 days of data. Verdict: HALF-REAL.",
+  "source_lines": [
+   "price homes in on one exact level **73% of the time in the first 45 minutes**",
+   "**$4,200 into $19,800 in six months**",
+   "neg-GEX days ~**2.8x the range**, pos-GEX days **63%**",
+   "**all the numbers come from ~60 days of data**",
+   "same-day (0DTE) options are now >50% of SPX options volume",
+   "+371%/6mo is a fat-tail outcome",
+   "**Sharpe ~0.7-1.3 (likely 0.5-0.9 net for a retail operator)**"
+  ]
+ },
+ "statarb_postmortem": {
+  "summary": "A market-neutral stat-arb book was built and tested against a bar of MAR 0.5 and Sortino 1.0, net of 2x modeled costs, on an untouched holdout. ETF and basket pairs failed first: 15 of 47 spreads looked promising and 0 cleared the bar. A PCA residual book across 96 large caps then passed, with a holdout Sortino of 1.53 and MAR of 0.94. Deleting the five best names flipped Sortino to -0.51, and winners did not persist from training to holdout (rank correlation -0.12). At retail, the turnover pays the spread that institutional desks get paid.",
+  "meta": "A home-built market-neutral stat-arb book passed at Sortino 1.53, then deleting its 5 best names out of 96 flipped it to -0.51. Verdict: NOT AT RETAIL.",
+  "source_lines": [
+   "MAR >= 0.5 **and** Sortino >= 1.0, net of **2x modeled cost**, on an **untouched holdout**",
+   "A curated screen of **47 spreads** flagged **15**",
+   "**All 15 -> 0 cleared the bar.**",
+   "holdout Sortino **1.53**, MAR **0.94**, net of 2x cost",
+   "**Sortino 1.53 -> -0.51.**",
+   "rank correlation **-0.12**"
+  ]
+ },
+ "kronos_foundation_model": {
+  "summary": "Kronos, an open-source transformer trained on about 12 billion K-lines, was tested as a volatility forecaster against a trailing 30-day estimator and the one-line EWMA(0.94) formula. Across 9 assets and 409 evaluation points at a 10-day horizon, Kronos posted an MAE of 0.553 versus 0.137 for both baselines, and a QLIKE of 0.706 versus 0.268 for EWMA. It lost to both baselines on all 9 assets, worst on NVDA at QLIKE 1.42 versus 0.19. Its RMSE of 1.216 reflects occasional wildly wrong forecasts that would size a position 4-5x wrong. The useful finding was the formula: EWMA(0.94) beat the trailing-30-day estimator in 36/36 cells on pooled QLIKE.",
+  "meta": "Kronos, the GPT for candlesticks, lost to a one-line 1990s formula on all 9 assets as a volatility input, zero wins. Verdict: BEATEN BY A FORMULA.",
+  "source_lines": [
+   "trained on ~12 billion K-lines across 45 exchanges",
+   "9 assets ... **409 evaluation points**",
+   "| **Kronos-base (102M)** | 0.553 | 1.216 | 0.706 |",
+   "| EWMA(0.94), one-liner | 0.137 | 0.227 | **0.268** |",
+   "**It loses to *both* baselines on all 9 assets - zero wins.** Worst case NVDA: QLIKE 1.42 vs 0.19.",
+   "size a position **4-5x wrong**",
+   "**EWMA(0.94) beat the trailing-30-day incumbent in 36/36 cells** on QLIKE (pooled)"
+  ]
+ },
+ "vix_cheatsheet": {
+  "summary": "A viral cheat sheet said to buy when the VIX tops 35 and sell when it drops under 15. Selling under 15 is a base-rate fallacy; buying the panic is a real edge, but a modest one. The best version, which waits for price to close back above its 200-day after a spike, returned +128% on SPY and +217% on QQQ from 2000 to 2025, against +644% and +668% for buy-and-hold. It roughly halved the drawdown (-28% and -33% versus -55% and -83%), but its best full-cycle MAR of 0.14 never cleared the 0.5 bar. On small caps (IWM) the protection vanished, with a -53.7% drawdown versus -58.6% for buy-and-hold.",
+  "meta": "Buying VIX panics roughly halves drawdown, but +128% vs +644% for buy-and-hold on SPY, 2000-2025. Selling calm is a fallacy. Verdict: HALF-TRUE.",
+  "source_lines": [
+   "when the VIX ... spikes above 35, buy aggressively; when it drops under 15, sell",
+   "| Total return | +128% | +217% | **loses** (BH +644% / +668%) |",
+   "| Max drawdown | -28% | -33% | **wins** (BH -55% / -83%) |",
+   "No version of this overlay clears it (best full-cycle MAR 0.14).",
+   "full-cycle drawdown **-53.7%**, essentially identical to buy-and-hold IWM (-58.6%)"
+  ]
+ },
+ "qqqm_dip_trail": {
+  "summary": "A forum rule says to buy QQQM when it closes below its 200-day EMA, then trail out with a 2% stop once it recovers. Tested on QQQ from 2021-05 to 2026-09, it returned +35.0% versus +121.0% for buy-and-hold, with a MAR of 0.21 and Sortino of 0.62 against 0.45 and 1.13. It won 83% of its trades (5/6) with a 3.46 profit factor, yet was in the market only 32% of the time and missed most of the climb. One 2022 entry sat 306 days at -14% before the stop could even arm. The shallower drawdown (-28.2% vs -35.6%) cost about two-thirds of the return.",
+  "meta": "Buying QQQ below its 200-day and trailing a 2% stop made +35.0% vs +121.0% for holding, despite an 83% win rate. Verdict: BEATEN BY DOING NOTHING.",
+  "source_lines": [
+   "| Total return | **+35.0%** | +121.0% |",
+   "| **MAR** (CAGR/MaxDD) | **0.21** | 0.45 |",
+   "| **Sortino** | **0.62** | 1.13 |",
+   "| Time in market | 32% | 100% |",
+   "| Profit factor | 3.46 | - |",
+   "| Win rate | 83% (5/6) | - |",
+   "sat **306 days at -14%**",
+   "| Max drawdown | -28.2% | -35.6% |",
+   "it costs you two-thirds of the return to get it"
+  ]
+ },
+ "macd_volume": {
+  "summary": "The MACD (12/26/9) crossover with a volume filter (RVOL of 1.5 or more) was tested on 55 liquid US large caps from 2020-08 to 2026-09. It returned +3.0% against +134.3% for buy-and-hold SPY, with a MAR of 0.05 and Sortino of 0.12. The volume 'multiplier' took profit factor from 1.07 to 1.05 and cut trades from 899 to 283; its one real effect was a smaller drawdown (-17% to -10%). The top 5 names made +$15,489 while the other 49 lost -$12,482 combined, and at 2x cost the system went net-negative (-1.1%). It works as a throttle on exposure, not a source of return.",
+  "meta": "MACD plus a volume filter made +3.0% vs +134.3% for SPY over six years; the volume filter only shrank the drawdown. Verdict: A THROTTLE, NOT AN EDGE.",
+  "source_lines": [
+   "**RVOL = volume / 20-day-avg-volume >= 1.5**",
+   "| Total return | **+3.0%** | +134.3% | +184.5% |",
+   "| **MAR** (CAGR/MaxDD) | **0.05** | 0.59 | 0.71 |",
+   "| **Sortino** | **0.12** | 1.28 | 1.51 |",
+   "| MACD-only (no RVOL) | +13.8% | 0.13 | 0.39 | **1.07** | 899 |",
+   "| MACD + RVOL >= 1.5 | +3.0% | 0.05 | 0.12 | **1.05** | 283 |",
+   "tighter drawdown (-17% -> -10%)",
+   "The top-5 names made **+$15,489**; the other 49 names *lost -$12,482 combined*",
+   "At 2x cost it goes **net-negative (-1.1%)**"
+  ]
+ },
+ "dca_vs_lumpsum": {
+  "summary": "This test asks whether a lump sum already in hand should be invested all at once or eased in with equal monthly buys, using Ken French monthly US total-market returns from 1926-07 to 2026-07 (1,201 months). With uninvested DCA cash fairly earning the T-bill rate, lump-sum beat a 12-month DCA in 69.1% of rolling windows, by an average of +3.31% (median +4.03%). Spreading the buys out longer made lump-sum win more often: 65.2% at 6 months, 73.3% at 24 months. DCA's wins clustered at market tops such as 1929, 1931, 1937 and 2008, and lump-sum's worst first-year drawdown was -65.7% (1931) against a median of -7.9%. DCA works as insurance against bad timing, not as a way to earn more.",
+  "meta": "DCA vs lump-sum over 100 years: investing at once won 69.1% of rolling 12-month windows by +3.31% on average. Verdict: DCA is safer, not richer.",
+  "source_lines": [
+   "Ken French monthly US total-market return ... 1926-07 -> 2026-07 (1,201 months)",
+   "Lump-sum wins | 69.1% of all rolling windows",
+   "Avg LS edge | +3.31% (median +4.03%)",
+   "6 months | 65.2% | +1.46% ... 24 months | 73.3% | +7.03%",
+   "The worst 12-month starts for lump-sum were 1929, 1931, 1937, 2008",
+   "Lump-sum's worst first-year drawdown in the whole record was -65.7% (1931); the median is -7.9%."
+  ]
+ },
+ "how_much_backtesting": {
+  "summary": "This episode runs no new backtest; it collects the six checks that the channel's first eleven strategies failed, and argues that the amount of data is not the real question. The bar is MAR of at least 0.5 and Sortino of at least 1.0, net of double the measured trading costs, on unseen data, and still standing after the five best trades are deleted. Deleting the top five trades took gap-and-go from MAR 1.56 to -0.30 and stat-arb from 0.94 to -0.30; in gap-and-go, 3 of 537 trades were 92% of the profit. Fifteen stat-arb spreads looked perfect in-sample and zero survived on data they had never seen. The useful number of years is whatever span contains the conditions that would kill the strategy.",
+  "meta": "How much backtesting is enough? Not a number of years: dropping 5 trades turned gap-and-go's MAR 1.56 into -0.30. Verdict: years is not the question.",
+  "source_lines": [
+   "MAR >= 0.5  AND  Sortino >= 1.0 / net of DOUBLE the measured trading costs / on data the rule never saw / and still standing after deleting the five best trades",
+   "gap-and-go | 1.56 | -0.30",
+   "stat-arb | 0.94 | -0.30",
+   "537 trades, and 3 of them were 92% of the profit.",
+   "15 spreads looked perfect in-sample. On data they'd never seen, zero survived."
+  ]
+ },
+ "tqqq_leverage": {
+  "summary": "This test compares buying and holding TQQQ (3x daily QQQ) with plain QQQ on Alpaca SIP total-return data from 2016-01-04 to 2026-09-16, a window that omits TQQQ's 2010-2015 run. TQQQ returned +3,097% against QQQ's +596%, with the higher CAGR (38.2% vs 19.9%), yet failed the channel's bar at MAR 0.47 while QQQ passed at 0.57. Its maximum drawdown was -81.7%, which needs a +445% gain to recover, and it spent 1,111 days underwater. A rule that held TQQQ only while QQQ was above its 200-day average reached MAR 0.65 with a -55.9% drawdown. Leverage raised the ending number but made the ride much worse.",
+  "meta": "TQQQ buy-and-hold made +3,097% from 2016 but fell -81.7% and sat 1,111 days underwater; MAR 0.47 vs QQQ 0.57. Verdict: more money, worse ride.",
+  "source_lines": [
+   "window 2016-01-04 -> 2026-09-16 (2,691 trading days, 10.7 yrs)",
+   "TQQQ buy & hold (the myth) | +3,097% | 38.2% | 0.47 | 1.17 | -81.7% | 2022 -79.1% | 1,111 d",
+   "QQQ buy & hold (the yardstick) | +596% | 19.9% | 0.57",
+   "A -81.7% drawdown needs a +445% gain to get back to even.",
+   "TQQQ, only when QQQ > 200d SMA | +2,710% | 36.6% | 0.65 | 1.24 | -55.9%"
+  ]
+ },
+ "rsi2_oversold": {
+  "summary": "This test runs the classic RSI-2 rule (buy large-caps above their 200-day average when the 2-day RSI drops below 10, sell on a bounce) on 55 liquid US large-caps from 2020-08-03 to 2026-09-16, with 5 bps one-way costs. It won 66.8% of trades and returned +92.2%, while equal-weight holding the same 55 stocks returned +177.7% with a better MAR (0.69 vs 0.59). The average loss was 1.40 times the average win, five names supplied 51% of net profit, and doubling costs dropped it to MAR 0.44 and a fail. In 2022, the one real bear market in the window, it lost $7,367. A high win rate described the shape of the trades, not an edge.",
+  "meta": "RSI-2 won 66.8% of trades yet returned +92.2% vs +177.7% for holding the same 55 stocks, and lost money in 2022. Verdict: a win rate is not an edge.",
+  "source_lines": [
+   "window 2020-08-03 -> 2026-09-16 (1,538 trading days, ~6.1 yrs)",
+   "Buy&Hold EW-universe (the yardstick) | +177.7% | 18.2% | 0.69",
+   "RSI-2 base (entry <10, exit >70, 10-day hold) | +92.2% | 11.3% | 0.59 | 1.22 | -19.2% | 66.8%",
+   "The average loss is 1.40x the average win.",
+   "Top-5 NAMES = $47,304 = 51% of all net profit",
+   "10 bps (2x, 20 bps round trip) | +66.4% | 8.7% | 0.44 | 0.96 | FAIL",
+   "2022 (the one real bear market) | -$7,367 | 166"
+  ]
+ },
+ "xsmom_momentum": {
+  "summary": "This test runs textbook cross-sectional momentum (rank by 12-1 or 6-1 month return, rebalance monthly) on 29 liquid ETFs, mega-cap stocks and two coins from 2010-01-04 to 2026-06-29. The dollar-neutral long/short versions failed at MAR 0.12 and 0.32. Long-only top-third versions nominally passed at MAR 0.55 and 0.58, but with drawdowns of -69.2% and -68.3%, and the top 5 names (led by BTC and NVDA) were 42% of gross profit. Removing the five best months dropped the best version to MAR 0.44, and removing Bitcoin and Ethereum made all four versions fail. What remained was concentrated exposure to whatever had already gone up.",
+  "meta": "Retail momentum, 2010-2026: long/short failed at MAR 0.12-0.32; long-only passed only with a -68% drawdown and failed without crypto. Verdict: just beta.",
+  "source_lines": [
+   "2010-01-04 -> 2026-06-29 (4,146 trading days, ~16.5 yrs), 29 liquid names",
+   "12-1 long/short (dollar-neutral) | 0.12 ... 6-1 long/short (dollar-neutral) | 0.32",
+   "12-1 long-only top third | 0.55 | 1.13 | 37.9% | -69.2% ... 6-1 long-only top third | 0.58 | 1.19 | 39.9% | -68.3%",
+   "Top-5 names = 42% of gross P&L (6-1 long-only), by contribution: BTC +83%, NVDA +80%",
+   "zeroing the five best calendar months drops it to MAR 0.44, Sortino 0.97",
+   "Remove the two coins and all four versions fail."
+  ]
+ },
+ "golden_cross": {
+  "summary": "This test trades the 50/200-day golden cross on 100.1 years of Fama-French daily US total-market returns (1926-07-01 to 2026-07-31), with cash earning T-bills and 5 bps switching costs. The cross turned $1 into about $6,149 (CAGR 9.1%) against buy-and-hold's about $17,630 (CAGR 10.3%). It did reduce risk in slow bear markets, cutting 2008 to -9.7% against -54.6% and the worst drawdown to -61.7% against -84.1%, but gave no protection in the fast 2020 crash (-34.2% either way). A simpler rule, holding only while price is above its 200-day average, made 11.2% a year with a -33.8% worst drop. The cross costs money and works mainly as a seatbelt.",
+  "meta": "Golden cross over 100 years: $1 grew to ~$6,149 vs ~$17,630 buy-and-hold, but 2008 fell -9.7% vs -54.6%. Verdict: not an engine, just a seatbelt.",
+  "source_lines": [
+   "Window 1926-07-01 -> 2026-07-31 (26,296 trading days, 100.1 years)",
+   "the golden cross turned $1 into ~$6,149 (CAGR 9.1%) against buy-and-hold's ~$17,630 (CAGR 10.3%)",
+   "it cut 2008 to -9.7% vs -54.6% and the worst-ever drawdown to -61.7% vs -84.1%",
+   "2020 COVID | -34.2% | -34.2% | 0.0",
+   "That single-line rule made 11.2% a year vs 9.1% with a worst drop of -33.8% vs -61.7%"
+  ]
+ },
+ "hfea": {
+  "summary": "This test examines HFEA, 55% UPRO (3x S&P 500) and 45% TMF (3x long Treasuries) rebalanced quarterly, on the real funds from 2016-01-04 to 2026-09-17 and in a rate-aware simulation from 1962. In the real window HFEA turned $1 into $4.65 against $4.46 for the S&P 500, but with a -70.5% drawdown against -33.8%, and 1,725 days underwater that were still open at the end of the data. In 2022 both legs fell together (UPRO -56.8%, TMF -72.6%, HFEA -64.1%) as the stock/bond correlation moved from -0.34 in 2016-2019 to +0.08. Through the 1962-1981 rising-rate era the simulation made +68.9% against +272.1% for plain stocks. Unleveraged 60/40 had the best MAR in both windows (0.47 real, 0.29 simulated).",
+  "meta": "HFEA from 2016: $1 became $4.65 vs $4.46 for the S&P, with a -70.5% drawdown; in 2022 both legs fell and HFEA lost -64.1%. Verdict: the hedge broke.",
+  "source_lines": [
+   "window 2016-01-04 -> 2026-09-17 (2,692 trading days, 10.7 years)",
+   "HFEA turned $1 into $4.65 against plain S&P buy-and-hold's $4.46",
+   "HFEA 55/45 UPRO/TMF (Q-reb) | +364.8% | $4.65 | 15.4% | 0.22 | 0.85 | -70.5% | 2022 -64.1% | 1,725 d",
+   "S&P 500 total-return buy & hold | +345.5% | $4.46 | 15.0% | 0.44 | 1.25 | -33.8%",
+   "UPRO -56.8%, TMF -72.6%, HFEA -64.1%",
+   "SPY vs TLT daily return correlation was -0.34 in 2016-2019, -0.45 in 2020, and +0.08 in 2022.",
+   "HFEA sim | +68.9% | -72.0% ... S&P 500 TR (sim) | +272.1%",
+   "unleveraged 60/40 had the best MAR in both windows: 0.47 real, 0.29 sim"
+  ]
+ },
+ "covered_calls": {
+  "summary": "This test compares five covered-call income ETFs (QYLD, XYLD, RYLD, JEPI, JEPQ) with their own underlying indexes on Alpaca SIP data through 2026-09-17, using both total return and share price. Every fund trailed its index: $10,000 in QYLD grew to $26,315 while the same amount in QQQ grew to $70,742. QYLD's share price fell -19.9% (from $23.12 to $18.51) while it paid about 12.8% a year, so part of the yield was returned capital. Taking the same $12,412 of income by selling QQQ shares instead left $33,015 against QYLD's $8,006, a difference of +$25,009. The funds did deliver lower volatility (QYLD 15.4% vs QQQ 22.2%), but the income was partly the holder's own money.",
+  "meta": "Covered-call ETFs: $10,000 in QYLD grew to $26,315 vs $70,742 in QQQ, as its share price fell -19.9%. Verdict: part of the yield is your own money.",
+  "source_lines": [
+   "QYLD | 2016-01-04 -> 2026-09-17 (10.7y)",
+   "$10,000 in QYLD grew to $26,315. The same $10,000 in QQQ grew to $70,742",
+   "QYLD | $23.12 -> $18.51 | -19.9% | 12.8%/yr",
+   "QYLD vs QQQ | 2016-> | $12,412 | $8,006 | $33,015 | +$25,009",
+   "QYLD vol 15.4% vs QQQ 22.2%"
+  ]
+ },
+ "sell_in_may": {
+  "summary": "This test runs the Sell in May rule (hold stocks November through April, T-bills May through October) on 100.1 years of Fama-French daily US total-market returns from 1926-07-01 to 2026-07-31. Winter did beat summer by about 3.8% a year, but summer still averaged +3.9% and was positive in 73% of years. The rule turned $1 into about $3,502 against buy-and-hold's about $17,630, keeping 19.9% of the ending wealth, in exchange for a smaller maximum drawdown (-58.9% vs -84.1%). Removing just three summers (1930, 1931, 2008) erased 26.8% of the seasonal gap. The season is real, but trading it gave up most of the money.",
+  "meta": "Sell in May since 1926: $1 grew to ~$3,502 vs ~$17,630 buy-and-hold, as summer still averaged +3.9%. Verdict: stay in May; the season is not a trade.",
+  "source_lines": [
+   "Window 1926-07-01 -> 2026-07-31: 26,296 trading days, 100.1 years",
+   "Winter (Nov-Apr) beat summer (May-Oct) by ~3.8%/yr over 100 years",
+   "May-Oct (summer) | 101 | +3.9% | +4.9% | 73% of years",
+   "Sell in May | +350,100% | 8.5% | $3,502 ... Buy & hold | +1,762,882% | 10.3% | $17,630",
+   "Sell in May kept 19.9% of buy and hold's ending wealth.",
+   "Max drawdown | -84.1% | -58.9%",
+   "Removing just 3 of 101 summers erases 26.8% of the entire seasonal edge."
+  ]
+ },
+ "crypto_4h_vs_daily": {
+  "summary": "This test re-runs an earlier research note that found daily bars edged 4-hour bars for a long-only Donchian breakout system on BTC and ETH, using identical rules on both timeframes from 2021-09-16 to 2026-09-16. The result reversed: the 4-hour chart made +$82,798 against +$54,489, with MAR 0.64 vs 0.32 and a 9.4% vs 12.7% maximum drawdown, and every 4-hour setting beat every daily setting. The original note was wrong because its 4-hour Ethereum download stopped at 2021-04-28, about four months of a five-year test. The win is thinner than it looks: Ethereum supplied +$54,280 of the total, Bitcoin's single best trade was +$43,078, and the 4-hour made 107 trades to the daily's 37 at the same per-trade cost. It is one five-year sample, 49% of it in a bull regime.",
+  "meta": "Crypto 4-hour vs daily re-test: 4-hour made +$82,798 vs +$54,489 (MAR 0.64 vs 0.32) after a truncated ETH download was found. Verdict: reversed.",
+  "source_lines": [
+   "Window 2021-09-16 -> 2026-09-16, 5 years",
+   "+$82,798 vs +$54,489 over five years, MAR 0.64 vs 0.32, Sortino 1.76 vs 0.92, and a shallower worst drop, 9.4% vs 12.7%",
+   "Every 4-hour setting beat every daily setting on MAR.",
+   "ETH/USD 4-hour download that stopped at 2021-04-28, about 4 months of a 5-year test",
+   "The ETH 4-hour book made +$54,280 of the +$82,798",
+   "the single best trade was +$43,078, one October 2023 breakout",
+   "The 4-hour makes 107 trades to the daily's 37",
+   "49% were BULL (908)"
+  ]
+ }
+}

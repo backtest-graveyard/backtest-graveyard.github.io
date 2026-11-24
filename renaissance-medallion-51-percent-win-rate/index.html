@@ -1,0 +1,76 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Is a 51% Win Rate Enough? The Renaissance Medallion Math, Tested | The Backtest Graveyard</title>
+<meta name="description" content="51% win rate to $100 billion? EV, Kelly and the law of large numbers only size bets; a 1.5% edge needs a real signal first. Verdict: NOT AN EDGE.">
+<link rel="canonical" href="https://backtest-graveyard.github.io/renaissance-medallion-51-percent-win-rate/">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Is a 51% Win Rate Enough? The Renaissance Medallion Math, Tested | The Backtest Graveyard">
+<meta property="og:description" content="51% win rate to $100 billion? EV, Kelly and the law of large numbers only size bets; a 1.5% edge needs a real signal first. Verdict: NOT AN EDGE.">
+<meta property="og:url" content="https://backtest-graveyard.github.io/renaissance-medallion-51-percent-win-rate/">
+<script type="application/ld+json">{"@context": "https://schema.org", "@type": "VideoObject", "name": "Renaissance Medallion: 51% Win Rate = $100 Billion. Zero Edge.", "description": "51% win rate to $100 billion? EV, Kelly and the law of large numbers only size bets; a 1.5% edge needs a real signal first. Verdict: NOT AN EDGE.", "thumbnailUrl": ["https://i.ytimg.com/vi/9OQisqho4xE/hqdefault.jpg"], "uploadDate": "2026-09-03T05:48:01Z", "contentUrl": "https://www.youtube.com/watch?v=9OQisqho4xE", "embedUrl": "https://www.youtube-nocookie.com/embed/9OQisqho4xE", "url": "https://backtest-graveyard.github.io/renaissance-medallion-51-percent-win-rate/"}</script>
+<style>
+:root { color-scheme: light dark; --fg:#1a1a1a; --muted:#666; --bg:#fdfdfc;
+        --line:#ddd; --accent:#6b2020; }
+@media (prefers-color-scheme: dark) {
+  :root { --fg:#e8e8e8; --muted:#9a9a9a; --bg:#161616; --line:#333;
+          --accent:#d98a8a; } }
+* { box-sizing: border-box; }
+body { margin:0; padding:2rem 1.25rem 4rem; background:var(--bg); color:var(--fg);
+       font:16px/1.6 -apple-system,BlinkMacSystemFont,"Segoe UI",Helvetica,Arial,sans-serif; }
+main { max-width: 42rem; margin: 0 auto; }
+h1 { font-size:1.6rem; line-height:1.25; margin:0 0 .5rem; }
+.sub { color:var(--muted); margin:0 0 1.5rem; }
+.crumb { font-size:.9rem; margin:0 0 1rem; }
+.stamp { display:inline-block; margin:.25rem 0 1.25rem; padding:.3rem .8rem; border:3px solid var(--accent);
+         color:var(--accent); font-weight:800; letter-spacing:.06em; transform:rotate(-2deg);
+         border-radius:4px; }
+h2 { font-size:1.05rem; margin:2rem 0 .5rem; padding-bottom:.3rem;
+     border-bottom:1px solid var(--line); }
+ul { list-style:none; padding:0; margin:0; }
+li { padding:.45rem 0; border-bottom:1px solid var(--line); }
+li:last-child { border-bottom:0; }
+a { color:var(--accent); text-decoration:none; word-break:break-word; }
+a:hover { text-decoration:underline; }
+.cap { display:block; font-size:.9rem; color:var(--muted); }
+figure { margin:1.5rem 0; }
+figure img { display:block; width:100%; height:auto; border-radius:4px; background:#1b1b1b; }
+.video { position:relative; aspect-ratio:16/9; margin:1.5rem 0; background:#000; border-radius:4px; overflow:hidden; }
+.video iframe { position:absolute; inset:0; width:100%; height:100%; border:0; }
+.dl { display:inline-block; margin:.5rem 0; padding:.6rem 1rem; border-radius:6px;
+      background:var(--accent); color:#fff; font-weight:600; }
+.dl:hover { text-decoration:none; opacity:.9; }
+.signup { border:1px solid var(--line); border-radius:6px; padding:1rem; margin:2rem 0; }
+.signup p { margin:0 0 .6rem; }
+.signup form { display:flex; gap:.5rem; flex-wrap:wrap; }
+.signup input[type=email] { flex:1 1 14rem; padding:.55rem .7rem; font:inherit; color:var(--fg);
+      background:var(--bg); border:1px solid var(--line); border-radius:6px; }
+.signup button { padding:.55rem 1rem; font:inherit; font-weight:600; color:#fff; background:var(--accent);
+      border:0; border-radius:6px; cursor:pointer; }
+footer { margin-top:3rem; padding-top:1rem; border-top:1px solid var(--line);
+         color:var(--muted); font-size:.85rem; }
+</style></head>
+<body><main>
+<p class="crumb"><a href="/episodes/">&larr; All episodes</a></p>
+<h1>Is a 51% Win Rate Enough? The Renaissance Medallion Math, Tested</h1>
+<div class="stamp">NOT AN EDGE.</div>
+<p>A viral post (about 1.28M views) argued that a 51% win rate plus Expected Value, Kelly and the Law of Large Numbers adds up to $100 billion, citing Renaissance&#x27;s Medallion Fund. The math is real: at 50.75% with symmetric payoffs the gross edge is about 1.5% of stake per trade. But the three formulas only size and count bets; they create no edge, and the signal itself is what the post leaves out. Medallion caps outside AUM at about $10B because the edge does not scale, and a 1.5% edge survives only at single-digit basis-point costs per side. Applied to an edge that is not there, full Kelly just loses money faster.</p>
+<figure><img src="chart5_capacity.webp" width="1200" height="658" alt="The RenTec 51% win rate backtest chart: capacity"></figure>
+<div class="video"><iframe src="https://www.youtube-nocookie.com/embed/9OQisqho4xE" title="Renaissance Medallion: 51% Win Rate = $100 Billion. Zero Edge." loading="lazy" allow="accelerometer; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe></div>
+<figure><img src="chart8_gaptrader.webp" width="1200" height="661" alt="The RenTec 51% win rate backtest chart: gaptrader" loading="lazy"></figure>
+<h2>The receipts</h2>
+<p>The code and result files behind every number on this page.</p>
+<a class="dl" href="https://github.com/backtest-graveyard/backtest-graveyard/tree/main/ep04-rentec-51pct">Browse the receipts for this episode</a>
+
+<h2>Related autopsies</h2>
+<ul>
+<li><a href="/does-the-kelly-criterion-work/">Does the Kelly Criterion Work for Position Sizing? Tested on a Trading Bot</a><span class="cap">Verdict: WORSE.</span></li>
+<li><a href="/buy-at-close-sell-at-open-overnight-strategy/">Does Buy at Close, Sell at Open Work? The Overnight Effect, Tested</a><span class="cap">Verdict: DEAD.</span></li>
+<li><a href="/does-gex-gamma-exposure-work/">Does GEX (Gamma Exposure) Predict the Market? The Viral Claim, Tested</a><span class="cap">Verdict: HALF-REAL.</span></li>
+</ul>
+<footer>
+Nothing on this site is financial advice. All results are historical simulations;
+simulations are not predictions. <a href="/">Links &amp; corrections</a> &middot;
+<a href="/episodes/">All episodes</a> &middot; <a href="/privacy.html">Privacy</a>
+</footer>
+</main></body></html>
