@@ -1,0 +1,522 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>The Receipts Notebook | The Backtest Graveyard</title><meta name="description" content="Every aired Backtest Graveyard episode: the test, the data, how to rerun it, and the verdict, with each figure checked against the public receipts."><style>:root { color-scheme: light dark; --fg:#1a1a1a; --muted:#666; --bg:#fdfdfc; --line:#ddd; --accent:#6b2020; --code:#f3f1ee; }
+@media (prefers-color-scheme: dark) { :root { --fg:#e8e8e8; --muted:#9a9a9a; --bg:#161616; --line:#333; --accent:#d98a8a; --code:#222; } }
+* { box-sizing: border-box; }
+body { margin:0; padding:2rem 1.25rem 4rem; background:var(--bg); color:var(--fg);
+       font:16px/1.6 -apple-system,BlinkMacSystemFont,"Segoe UI",Helvetica,Arial,sans-serif; }
+main { max-width: 44rem; margin: 0 auto; }
+h1 { font-size:1.7rem; line-height:1.25; margin:0 0 .4rem; }
+h2 { font-size:1.25rem; margin:2.6rem 0 .3rem; padding-top:1.2rem; border-top:1px solid var(--line); }
+a { color:var(--accent); }
+.sub, .cap, .label { color:var(--muted); }
+.cap { font-size:.85rem; }
+.label { margin-bottom:.3rem; font-size:.9rem; }
+.stamp { display:inline-block; padding:.2rem .7rem; border:3px solid var(--accent); color:var(--accent);
+         font-weight:800; letter-spacing:.06em; transform:rotate(-2deg); border-radius:4px; }
+blockquote { margin:0 0 1rem; padding:.2rem 0 .2rem 1rem; border-left:3px solid var(--accent); font-size:.93rem; }
+blockquote p { margin:.45rem 0; }
+pre, .out { background:var(--code); padding:.7rem .9rem; border-radius:6px; overflow-x:auto; font-size:.8rem; line-height:1.45; }
+.out { white-space:pre-wrap; word-break:break-word; color:var(--muted); }
+details { margin:.4rem 0 1rem; } summary { cursor:pointer; color:var(--muted); font-size:.9rem; }
+img { max-width:100%; height:auto; border:1px solid var(--line); border-radius:4px; margin:.5rem 0; }
+table { border-collapse:collapse; width:100%; font-size:.92rem; }
+th, td { text-align:left; padding:.35rem .5rem; border-bottom:1px solid var(--line); vertical-align:top; }</style></head><body><main>
+<h1>The Receipts Notebook</h1>
+<p class="sub">The Backtest Graveyard. Every aired episode in one file. Updated 2026-11-28.</p>
+<p>Every episode ends with a verdict. This is where the verdicts come from.</p>
+<p>One section per episode: what got tested, where the data came from, how to rerun it, and what the test said. Every figure is quoted word for word from that episode&#x27;s write-up in the public receipts repo. The code cell under each section goes and checks. Run it and it prints the line each figure came from. If one ever comes back MISSING, the write-up changed and I owe you a correction.</p>
+<p>Not financial advice, and I&#x27;m not licensed to give it. A backtest is a simulation of the past. It isn&#x27;t a prediction, and nothing here tells you what to buy.</p>
+<p>How to use it. Read it as it is, or <a href="https://colab.research.google.com/github/backtest-graveyard/backtest-graveyard.github.io/blob/main/receipts/receipts_notebook.ipynb">open it in Colab</a> and pick Runtime, then Run all. No account, no keys, nothing to install. The checks read the write-ups straight from GitHub. Rerunning a backtest itself is different: use the command under each episode, and some of them need your own market-data keys. Each section says which. All the code and charts live in <a href="https://github.com/backtest-graveyard/backtest-graveyard">the receipts repo</a>.</p>
+<h2>The scoreboard</h2>
+<table><thead><tr><th>Ep</th><th>Test</th><th>Stamp</th></tr></thead><tbody><tr><td>1</td><td><a href="#ep01">The Overnight Effect</a></td><td>DEAD.</td></tr><tr><td>2</td><td><a href="#ep02">Gap-and-Go</a></td><td>DEAD.</td></tr><tr><td>3</td><td><a href="#ep03">The Kelly Criterion</a></td><td>WORSE.</td></tr><tr><td>4</td><td><a href="#ep04">The 51% → $100 Billion Math</a></td><td>NOT AN EDGE.</td></tr><tr><td>5</td><td><a href="#ep05">GEX and Dealer Hedging</a></td><td>HALF-REAL.</td></tr><tr><td>6</td><td><a href="#ep06">Market-Neutral Stat-Arb</a></td><td>NOT AT RETAIL.</td></tr><tr><td>7</td><td><a href="#ep07">Kronos, the &quot;GPT for candlesticks&quot; AI</a></td><td>BEATEN BY A FORMULA.</td></tr><tr><td>8</td><td><a href="#ep08">The Viral &quot;VIX Cheat Sheet&quot;</a></td><td>HALF-TRUE.</td></tr><tr><td>9</td><td><a href="#ep09">Buy QQQM Below Its 200-Day, Trail Out With a 2% Stop</a></td><td>BEATEN BY DOING NOTHING.</td></tr><tr><td>10</td><td><a href="#ep10">MACD + the &quot;Profitability Multiplier&quot; Volume Filter</a></td><td>A THROTTLE, NOT AN EDGE.</td></tr><tr><td>11</td><td><a href="#ep11">Dollar-Cost Averaging vs. Lump-Sum</a></td><td>SAFER, NOT RICHER.</td></tr><tr><td>12</td><td><a href="#ep12">How Much Backtesting Is Enough?</a></td><td>NOT THE QUESTION.</td></tr><tr><td>13</td><td><a href="#ep13">TQQQ &quot;Just Buy 3x And Hold&quot;</a></td><td>WORSE RIDE.</td></tr><tr><td>14</td><td><a href="#ep14">RSI-2 &quot;It Calls The Bottom&quot;</a></td><td>NOT AN EDGE.</td></tr><tr><td>15</td><td><a href="#ep15">The Momentum Factor, Retail Edition</a></td><td>JUST BETA.</td></tr><tr><td>16</td><td><a href="#ep16">The Golden Cross (50/200)</a></td><td>JUST A SEATBELT.</td></tr><tr><td>17</td><td><a href="#ep17">HedgeFundie&#x27;s Excellent Adventure (HFEA)</a></td><td>THE HEDGE BROKE.</td></tr><tr><td>18</td><td><a href="#ep18">Covered-Call Income ETFs</a></td><td>YOUR OWN MONEY.</td></tr><tr><td>19</td><td><a href="#ep19">Sell in May and Go Away</a></td><td>STAY IN MAY.</td></tr><tr><td>20</td><td><a href="#ep20">4-Hour vs Daily, Crypto: The Re-Test</a></td><td>REVERSED.</td></tr><tr><td>21</td><td><a href="#ep21">Buffett&#x27;s Rules, Tested</a></td><td>NOT VALIDATED.</td></tr></tbody></table>
+<h2 id="ep01">Ep 1. The Overnight Effect</h2>
+<p><span class="stamp">DEAD.</span></p>
+<p><strong>The test.</strong> A viral post claimed that buying Micron (MU) at every close and selling at every open made a fortune. The test checked whether the overnight/intraday split is real, then whether it can be harvested every night or only across earnings nights. The kill tests dropped the best nights and swapped the hand-picked names for a point-in-time universe (only names you could have listed back then).</p>
+<p><strong>The data.</strong> SIP daily bars from 2016-01-04 to 2026-08-21 via Alpaca&#x27;s API. Earnings dates and times come from SEC EDGAR 8-K filings with Item 2.02.</p>
+<p><strong>Rerun it.</strong> Three scripts are committed: overnight_earnings_backtest.py, overnight_earnings_ptuniverse.py and make_charts.py. They need Python 3.11+, matplotlib, your own Alpaca market-data keys, and your own contact info in the SEC User-Agent header.</p>
+<pre><code>python3 overnight_earnings_backtest.py</code></pre>
+<p><strong>The verdict.</strong> Dead. The overnight anomaly is real, but no tradable version of it survives honest testing. Trading it every night dies on costs, earnings nights collapse without the five best, and the point-in-time universe has nothing.</p>
+<p class="label">The numbers, quoted from the write-up:</p>
+<blockquote><p>Verdict: DEAD. The viral overnight-return anomaly is real, but no tradable version of it survives honest testing.</p><p>At 5 bps per round trip, 2,674 days of daily trading multiplies terminal equity by ~0.26; at 10 bps, ~0.07.</p><p>| Drop 5 best nights | +0.7%/yr | +4.1%/yr |</p><p>Removing five nights out of 42 collapses both books: the tails ARE the strategy.</p><p>| TOP-20 (primary) | +2.0% | 0.07 |</p><p>Monotone: the more honest the universe, the worse the book.</p></blockquote>
+<img src="https://raw.githubusercontent.com/backtest-graveyard/backtest-graveyard/main/ep01-overnight-effect/charts/chart3_kill_ladder.png" alt="Ep 1 chart" loading="lazy">
+<p>Receipts: <a href="https://github.com/backtest-graveyard/backtest-graveyard/tree/main/ep01-overnight-effect">ep01-overnight-effect/</a> · Episode: <a href="https://www.youtube.com/watch?v=83HvnC28VKs">watch on YouTube</a></p>
+<p class="cap">Not financial advice. A backtest is a simulation of the past, not a prediction.</p>
+<details><summary>The check, run against the repo</summary><div class="out">found   ep01-overnight-effect/README.md line 4
+        Verdict: DEAD. The viral overnight-return anomaly is real, but no tradable version of it survives honest testing.
+found   ep01-overnight-effect/README.md line 30
+        At 5 bps per round trip, 2,674 days of daily trading multiplies terminal equity by ~0.26; at 10 bps, ~0.07.
+found   ep01-overnight-effect/README.md line 46
+        | Drop 5 best nights | +0.7%/yr | +4.1%/yr |
+found   ep01-overnight-effect/README.md line 48
+        Removing five nights out of 42 collapses both books: the tails ARE the strategy.
+found   ep01-overnight-effect/README.md line 66
+        | TOP-20 (primary) | +2.0% | 0.07 |
+found   ep01-overnight-effect/README.md line 70
+        Monotone: the more honest the universe, the worse the book.
+</div></details>
+<h2 id="ep02">Ep 2. Gap-and-Go</h2>
+<p><span class="stamp">DEAD.</span></p>
+<p><strong>The test.</strong> A gap-and-go momentum bot was backtested across every US stock: gap ≥ 10%, price $2–$20, float &lt; 50M, RVOL ≥ 5×, entry on a breakout on 1-min bars. The kill test strips the best trades by R-multiple (profit in units of the risk taken). Each discretionary read was also turned into a rule and scored against real trade outcomes.</p>
+<p><strong>The data.</strong> Intraday bars for every US stock, 2025-09-11 to 2026-04-17, giving 537 trades. The reads analysis used additional professional-grade market data and EDGAR offering history.</p>
+<p><strong>Rerun it.</strong> reproduce.py recomputes every kill-test number from the committed trades.csv. It needs only Python 3.8+, plus matplotlib for --charts, and no credentials. The PAVS chart, the ROI sweep and the reads analysis aren&#x27;t re-runnable from this folder.</p>
+<pre><code>python3 reproduce.py</code></pre>
+<p><strong>The verdict.</strong> Teachable, not deployable. The pattern is real, but the profit is a handful of unpredictable monster mornings a bot can&#x27;t capture on retail data and fills. The one mechanizable edge that survives is avoiding serial diluters.</p>
+<p class="label">The numbers, quoted from the write-up:</p>
+<blockquote><p>Verdict: teachable, not deployable.</p><p>Headline (as-shipped, clean fills): +$12,505 over the window, +36.6R, 44% win rate.</p><p>| minus top 5 | −14.7R — goes negative |</p><p>The strategy doesn&#x27;t have 500 small edges; it has 5 lottery tickets and 532 scratch-offs.</p><p>The honest middle case (~+10%) merely matches the index</p><p>Skipping the serial diluters is worth ~+0.15R per trade.</p></blockquote>
+<img src="https://raw.githubusercontent.com/backtest-graveyard/backtest-graveyard/main/ep02-gap-and-go/charts/chart3_strip_ladder.png" alt="Ep 2 chart" loading="lazy">
+<p>Receipts: <a href="https://github.com/backtest-graveyard/backtest-graveyard/tree/main/ep02-gap-and-go">ep02-gap-and-go/</a> · Episode: <a href="https://www.youtube.com/watch?v=RF2WZ8EH1vE">watch on YouTube</a></p>
+<p class="cap">Not financial advice. A backtest is a simulation of the past, not a prediction.</p>
+<details><summary>The check, run against the repo</summary><div class="out">found   ep02-gap-and-go/README.md line 4
+        Verdict: teachable, not deployable.
+found   ep02-gap-and-go/README.md line 24
+        Headline (as-shipped, clean fills): +$12,505 over the window, +36.6R, 44% win rate.
+found   ep02-gap-and-go/README.md line 32
+        | minus top 5 | −14.7R — goes negative |
+found   ep02-gap-and-go/README.md line 35
+        The strategy doesn&#x27;t have 500 small edges; it has 5 lottery tickets and 532 scratch-offs.
+found   ep02-gap-and-go/README.md line 62
+        The honest middle case (~+10%) merely matches the index
+found   ep02-gap-and-go/README.md line 84
+        Skipping the serial diluters is worth ~+0.15R per trade.
+</div></details>
+<h2 id="ep03">Ep 3. The Kelly Criterion</h2>
+<p><span class="stamp">WORSE.</span></p>
+<p><strong>The test.</strong> Does handing a working bot&#x27;s position sizing to the Kelly criterion (a formula for the &quot;optimal&quot; bet fraction) make it better? The bot&#x27;s signal stayed untouched. Constant-risk sizing was raced against quarter, half and full Kelly, with every variant matched to the same average gross exposure so none could win just by betting bigger.</p>
+<p><strong>The data.</strong> 5 years of history from a private, live paper-traded bot, with costs of 15 bps entry and 8 bps exit. The README doesn&#x27;t name the price data source.</p>
+<p><strong>Rerun it.</strong> No code is committed. The bot&#x27;s signal and code are private, so the results aren&#x27;t independently re-runnable. Every figure is in kelly_sizing_results.csv, and the method is described for running the same test on your own strategy.</p>
+<p><strong>The verdict.</strong> Kelly was a downgrade on a bot that already works, and full strength was the worst. MAR (yearly return divided by the worst drop) fell from 2.05 at constant risk to 1.42 at full Kelly. Keep boring, constant-risk sizing.</p>
+<p class="label">The numbers, quoted from the write-up:</p>
+<blockquote><p>Verdict: on a bot that already works, swapping constant-risk sizing for the Kelly criterion was a downgrade. At full strength it was the worst. Keep boring, constant-risk sizing.</p><p>| Constant-risk (vol-target) | 0.35 | +51.2% | 2.05 | 1.96 | −6.2% |</p><p>| Kelly ×1.00 (full) | 0.58 | +47.6% | 1.42 | 2.05 | −8.5% |</p><p>More Kelly → worse return-to-drawdown, and a deeper hole.</p><p>Unmatched, on a single representative asset, full Kelly returned +416% vs +196% for constant-risk sizing over 5 years — a headline &quot;double.&quot;</p></blockquote>
+<img src="https://raw.githubusercontent.com/backtest-graveyard/backtest-graveyard/main/ep03-kelly-sizing/charts/chart4_mar_ladder.png" alt="Ep 3 chart" loading="lazy">
+<p>Receipts: <a href="https://github.com/backtest-graveyard/backtest-graveyard/tree/main/ep03-kelly-sizing">ep03-kelly-sizing/</a> · Episode: <a href="https://www.youtube.com/watch?v=_h7k9CxDUGg">watch on YouTube</a></p>
+<p class="cap">Not financial advice. A backtest is a simulation of the past, not a prediction.</p>
+<details><summary>The check, run against the repo</summary><div class="out">found   ep03-kelly-sizing/README.md line 3
+        Verdict: on a bot that already works, swapping constant-risk sizing for the Kelly criterion was a downgrade. At full strength it was the worst. Keep boring, constant-risk sizing.
+found   ep03-kelly-sizing/README.md line 28
+        | Constant-risk (vol-target) | 0.35 | +51.2% | 2.05 | 1.96 | −6.2% |
+found   ep03-kelly-sizing/README.md line 31
+        | Kelly ×1.00 (full) | 0.58 | +47.6% | 1.42 | 2.05 | −8.5% |
+found   ep03-kelly-sizing/README.md line 35
+        More Kelly → worse return-to-drawdown, and a deeper hole.
+found   ep03-kelly-sizing/README.md line 39
+        Unmatched, on a single representative asset, full Kelly returned +416% vs +196% for constant-risk sizing over 5 years — a headline &quot;double.&quot;
+</div></details>
+<h2 id="ep04">Ep 4. The 51% → $100 Billion Math</h2>
+<p><span class="stamp">NOT AN EDGE.</span></p>
+<p><strong>The test.</strong> A viral post used Renaissance&#x27;s Medallion Fund to argue that a 51% win rate plus Expected Value, Kelly sizing and the Law of Large Numbers turns into $100 billion. It&#x27;s a math teardown, not a new backtest. It checks each formula and the post&#x27;s capacity and cost claims, and reuses the gap-trader numbers from Episode 2.</p>
+<p><strong>The data.</strong> No new market data. The Medallion capacity and cost facts are public, and the gap-trader concentration numbers are the ones published with Episode 2.</p>
+<p><strong>Rerun it.</strong> No code is committed. It&#x27;s a math teardown with two charts. The portable test is to delete your five best trades and re-run your own backtest.</p>
+<p><strong>The verdict.</strong> Every number in the viral post is real, and the system it describes still has zero edge. Expected Value, Kelly and the Law of Large Numbers size and count your bets. They don&#x27;t make the money.</p>
+<p class="label">The numbers, quoted from the write-up:</p>
+<blockquote><p>Verdict: every number in the viral post is real, and the &quot;system&quot; it describes still has zero edge.</p><p>At p = 50.75% with symmetric payoffs the gross edge is ≈ 1.5% of stake per trade.</p><p>Add all three together and they create exactly zero edge.</p><p>Medallion caps outside AUM at ~$10B and forcibly returns capital and profits to employees</p><p>Its effective N was about 3, not 537.</p></blockquote>
+<img src="https://raw.githubusercontent.com/backtest-graveyard/backtest-graveyard/main/ep04-rentec-51pct/charts/chart5_capacity.png" alt="Ep 4 chart" loading="lazy">
+<p>Receipts: <a href="https://github.com/backtest-graveyard/backtest-graveyard/tree/main/ep04-rentec-51pct">ep04-rentec-51pct/</a> · Episode: <a href="https://www.youtube.com/watch?v=9OQisqho4xE">watch on YouTube</a></p>
+<p class="cap">Not financial advice. A backtest is a simulation of the past, not a prediction.</p>
+<details><summary>The check, run against the repo</summary><div class="out">found   ep04-rentec-51pct/README.md line 3
+        Verdict: every number in the viral post is real, and the &quot;system&quot; it describes still has zero edge.
+found   ep04-rentec-51pct/README.md line 15
+        At p = 50.75% with symmetric payoffs the gross edge is ≈ 1.5% of stake per trade.
+found   ep04-rentec-51pct/README.md line 19
+        Add all three together and they create exactly zero edge.
+found   ep04-rentec-51pct/README.md line 27
+        Medallion caps outside AUM at ~$10B and forcibly returns capital and profits to employees
+found   ep04-rentec-51pct/README.md line 43
+        Its effective N was about 3, not 537.
+</div></details>
+<h2 id="ep05">Ep 5. GEX and Dealer Hedging</h2>
+<p><span class="stamp">HALF-REAL.</span></p>
+<p><strong>The test.</strong> A viral thread claimed GEX (gamma exposure, an estimate of how options dealers are forced to hedge) pulls price to one level 73% of the time in the first 45 minutes, and that it turned $4,200 into $19,800 in six months. It&#x27;s a mechanism and failure-mode teardown, not a fresh backtest. It separates the documented volatility-regime effect from the price-magnet and fortune claims.</p>
+<p><strong>The data.</strong> The thread&#x27;s numbers come from about 60 days of data, and it published no code or trade log. The teardown leans on the SqueezeMetrics 2018 framework and follow-up research, and the charts are illustrative of direction.</p>
+<p><strong>Rerun it.</strong> No code is committed. The write-up and two illustrative charts are here. The GEX estimator needs a live options-chain feed that isn&#x27;t redistributed.</p>
+<p><strong>The verdict.</strong> Half-real. Dealer gamma does shape whether days are quiet or wild, and that&#x27;s a documented edge. The 73% price magnet is overstated and broken by same-day options, and the $4,200 → $19,800 is leverage plus survivorship.</p>
+<p class="label">The numbers, quoted from the write-up:</p>
+<blockquote><p>Verdict: half-real. Dealer-gamma genuinely shapes the volatility regime (quiet vs. wild) — that read is a real, documented edge.</p><p>Mechanism real, fortune a screenshot.</p><p>And all the numbers come from ~60 days of data — about one OpEx cycle.</p><p>same-day (0DTE) options are now &gt;50% of SPX options volume</p><p>plausibly earns Sharpe ~0.7–1.3 (likely 0.5–0.9 net for a retail operator)</p><p>Not +371%/6mo.</p></blockquote>
+<img src="https://raw.githubusercontent.com/backtest-graveyard/backtest-graveyard/main/ep05-gex-dealer-hedging/charts/chart_regime.png" alt="Ep 5 chart" loading="lazy">
+<p>Receipts: <a href="https://github.com/backtest-graveyard/backtest-graveyard/tree/main/ep05-gex-dealer-hedging">ep05-gex-dealer-hedging/</a> · Episode: <a href="https://www.youtube.com/watch?v=OXazkvv67Qc">watch on YouTube</a></p>
+<p class="cap">Not financial advice. A backtest is a simulation of the past, not a prediction.</p>
+<details><summary>The check, run against the repo</summary><div class="out">found   ep05-gex-dealer-hedging/README.md line 3
+        Verdict: half-real. Dealer-gamma genuinely shapes the volatility regime (quiet vs. wild) — that read is a real, documented edge.
+found   ep05-gex-dealer-hedging/README.md line 3
+        Mechanism real, fortune a screenshot.
+found   ep05-gex-dealer-hedging/README.md line 29
+        And all the numbers come from ~60 days of data — about one OpEx cycle.
+found   ep05-gex-dealer-hedging/README.md line 31
+        same-day (0DTE) options are now &gt;50% of SPX options volume
+found   ep05-gex-dealer-hedging/README.md line 37
+        plausibly earns Sharpe ~0.7–1.3 (likely 0.5–0.9 net for a retail operator)
+found   ep05-gex-dealer-hedging/README.md line 37
+        Not +371%/6mo.
+</div></details>
+<h2 id="ep06">Ep 6. Market-Neutral Stat-Arb</h2>
+<p><span class="stamp">NOT AT RETAIL.</span></p>
+<p><strong>The test.</strong> A home-built market-neutral statistical arbitrage bot, first on ETF and basket pairs, then on a PCA residual strategy that bets each stock&#x27;s leftover wobble snaps back. The bar was MAR (yearly return divided by the worst drop) ≥ 0.5 and Sortino (return measured against the bad days only) ≥ 1.0, net of 2× modeled cost, on an untouched holdout. The kill test deleted the five best names out of 96.</p>
+<p><strong>The data.</strong> 96 liquid US large caps that exist today, 8 years of daily data, with spreads measured from consolidated (SIP) quotes. The universe is survivorship-biased, which makes the results optimistic.</p>
+<p><strong>Rerun it.</strong> No code is committed. The research code runs on a paid consolidated-quote feed that can&#x27;t be redistributed, and the holdout is spent. The write-up and two charts are here.</p>
+<p><strong>The verdict.</strong> Not at retail. The signal was real and cleared the bar on held-out data, but deleting the five best names flipped Sortino from 1.53 to −0.51. The keeper is the test, not the strategy.</p>
+<p class="label">The numbers, quoted from the write-up:</p>
+<blockquote><p>Then deleting the five best names out of 96 flipped it from Sortino 1.53 to −0.51.</p><p>All 15 → 0 cleared the bar.</p><p>With measured spreads from real consolidated quotes (~6 bps), it flipped to a borderline pass: holdout Sortino 1.53, MAR 0.94, net of 2× cost.</p><p>Only 55 of 96 names were net-positive. The top 5 were 27% of the positive P&amp;L.</p><p>Winners didn&#x27;t persist from the training period into the holdout (rank correlation −0.12; last period&#x27;s top 15 did worse than its bottom 15).</p><p>The keeper is the test, not the strategy.</p></blockquote>
+<img src="https://raw.githubusercontent.com/backtest-graveyard/backtest-graveyard/main/ep06-statarb-postmortem/charts/chart_droptop5.png" alt="Ep 6 chart" loading="lazy">
+<p>Receipts: <a href="https://github.com/backtest-graveyard/backtest-graveyard/tree/main/ep06-statarb-postmortem">ep06-statarb-postmortem/</a> · Episode: <a href="https://www.youtube.com/watch?v=lMg_AvVw_6A">watch on YouTube</a></p>
+<p class="cap">Not financial advice. A backtest is a simulation of the past, not a prediction.</p>
+<details><summary>The check, run against the repo</summary><div class="out">found   ep06-statarb-postmortem/README.md line 3
+        Then deleting the five best names out of 96 flipped it from Sortino 1.53 to −0.51.
+found   ep06-statarb-postmortem/README.md line 20
+        All 15 → 0 cleared the bar.
+found   ep06-statarb-postmortem/README.md line 29
+        With measured spreads from real consolidated quotes (~6 bps), it flipped to a borderline pass: holdout Sortino 1.53, MAR 0.94, net of 2× cost.
+found   ep06-statarb-postmortem/README.md line 40
+        Only 55 of 96 names were net-positive. The top 5 were 27% of the positive P&amp;L.
+found   ep06-statarb-postmortem/README.md line 49
+        Winners didn&#x27;t persist from the training period into the holdout (rank correlation −0.12; last period&#x27;s top 15 did worse than its bottom 15).
+found   ep06-statarb-postmortem/README.md line 3
+        The keeper is the test, not the strategy.
+</div></details>
+<h2 id="ep07">Ep 7. Kronos, the &quot;GPT for candlesticks&quot; AI</h2>
+<p><span class="stamp">BEATEN BY A FORMULA.</span></p>
+<p><strong>The test.</strong> Kronos is an open-source transformer trained on candlestick bars that predicts the next bar. Its volatility forecasts were raced against the bot&#x27;s trailing-30-day estimator and EWMA(0.94), a one-line 1990s formula, on forward realised vol 10 trading days out.</p>
+<p><strong>The data.</strong> Real inference with Kronos-base (102M params) on CPU, across 9 assets (BTC, SOL, NVDA, AAPL, GLD, SLV, DBC, URA, USO) and 409 evaluation points on a roughly 6-weekly grid over 2021–2026. The README doesn&#x27;t name the price data source.</p>
+<p><strong>Rerun it.</strong> No code is committed. The write-up and two charts are here, and the scoreboard chart uses illustrative per-asset values. The model itself is public (arXiv 2508.02739, GitHub shiyu-coder/Kronos).</p>
+<p><strong>The verdict.</strong> A real forecaster with no proven edge. As a volatility input it lost to both baselines on all 9 assets. The keeper is the one-line EWMA formula, which also beat the bot&#x27;s own trailing-30-day estimator.</p>
+<p class="label">The numbers, quoted from the write-up:</p>
+<blockquote><p>Verdict: a real forecaster, no proven edge — and as a volatility input it&#x27;s ~4–5× worse than a one-line 1990s formula.</p><p>| Kronos-base (102M) | 0.553 | 1.216 | 0.706 |</p><p>It loses to both baselines on all 9 assets — zero wins.</p><p>EWMA(0.94) beat the trailing-30-day incumbent in 36/36 cells on QLIKE (pooled)</p><p>Kronos is a real forecaster that lost the one race that mattered.</p></blockquote>
+<img src="https://raw.githubusercontent.com/backtest-graveyard/backtest-graveyard/main/ep07-kronos-foundation-model/charts/chart_faceoff.png" alt="Ep 7 chart" loading="lazy">
+<p>Receipts: <a href="https://github.com/backtest-graveyard/backtest-graveyard/tree/main/ep07-kronos-foundation-model">ep07-kronos-foundation-model/</a> · Episode: <a href="https://www.youtube.com/watch?v=p1wj7qYU6dM">watch on YouTube</a></p>
+<p class="cap">Not financial advice. A backtest is a simulation of the past, not a prediction.</p>
+<details><summary>The check, run against the repo</summary><div class="out">found   ep07-kronos-foundation-model/README.md line 3
+        Verdict: a real forecaster, no proven edge — and as a volatility input it&#x27;s ~4–5× worse than a one-line 1990s formula.
+found   ep07-kronos-foundation-model/README.md line 30
+        | Kronos-base (102M) | 0.553 | 1.216 | 0.706 |
+found   ep07-kronos-foundation-model/README.md line 36
+        It loses to both baselines on all 9 assets — zero wins.
+found   ep07-kronos-foundation-model/README.md line 46
+        EWMA(0.94) beat the trailing-30-day incumbent in 36/36 cells on QLIKE (pooled)
+found   ep07-kronos-foundation-model/README.md line 54
+        Kronos is a real forecaster that lost the one race that mattered.
+</div></details>
+<h2 id="ep08">Ep 8. The Viral &quot;VIX Cheat Sheet&quot;</h2>
+<p><span class="stamp">HALF-TRUE.</span></p>
+<p><strong>The test.</strong> A viral cheat sheet says buy aggressively when the VIX (the market&#x27;s fear gauge) spikes above 35 and sell when it drops under 15. The buy-the-panic leg was stress-tested on SPY, QQQ and IWM across the 2000–09 bear, the 2010–25 bull and the full cycle, with entry, exit and sizing rules the sheet never gave.</p>
+<p><strong>The data.</strong> Daily ^VIX, SPY, QQQ and IWM prices, auto-adjusted, over 2000–2025. The README names the tickers but not the data vendor.</p>
+<p><strong>Rerun it.</strong> No code is committed. The folder holds the write-up and four charts.</p>
+<p><strong>The verdict.</strong> Half-true. Waiting for the S&amp;P to reclaim its 200-day after a VIX panic roughly halves buy-and-hold&#x27;s drawdown (how far underwater you go), but it loses on return and never reaches a MAR (yearly growth divided by the worst drop) of 0.5. Selling when the VIX is calm is a coin flip, and &quot;make millions&quot; is false.</p>
+<p class="label">The numbers, quoted from the write-up:</p>
+<blockquote><p>Then I ran the exact same stop through the 2010s bull: buy-and-hold made +702%, the stop made +12.9%.</p><p>| Max drawdown | −28% | −33% | wins (BH −55% / −83%) |</p><p>over 2010–2025 the one strategy that would have cleared the bar (MAR ≥ 0.5) was just buy-and-hold QQQ (MAR 0.53).</p><p>No version of this overlay clears it (best full-cycle MAR 0.14).</p><p>Verdict: half-true. &quot;Buy the panic&quot; is a real, durable edge — but it&#x27;s a seatbelt, not an engine.</p></blockquote>
+<img src="https://raw.githubusercontent.com/backtest-graveyard/backtest-graveyard/main/ep08-vix-cheatsheet/charts/chart8_vs_index.png" alt="Ep 8 chart" loading="lazy">
+<p>Receipts: <a href="https://github.com/backtest-graveyard/backtest-graveyard/tree/main/ep08-vix-cheatsheet">ep08-vix-cheatsheet/</a> · Episode: <a href="https://www.youtube.com/watch?v=jBZSmC9jgxs">watch on YouTube</a></p>
+<p class="cap">Not financial advice. A backtest is a simulation of the past, not a prediction.</p>
+<details><summary>The check, run against the repo</summary><div class="out">found   ep08-vix-cheatsheet/README.md line 28
+        Then I ran the exact same stop through the 2010s bull: buy-and-hold made +702%, the stop made +12.9%.
+found   ep08-vix-cheatsheet/README.md line 43
+        | Max drawdown | −28% | −33% | wins (BH −55% / −83%) |
+found   ep08-vix-cheatsheet/README.md line 60
+        over 2010–2025 the one strategy that would have cleared the bar (MAR ≥ 0.5) was just buy-and-hold QQQ (MAR 0.53).
+found   ep08-vix-cheatsheet/README.md line 76
+        No version of this overlay clears it (best full-cycle MAR 0.14).
+found   ep08-vix-cheatsheet/README.md line 3
+        Verdict: half-true. &quot;Buy the panic&quot; is a real, durable edge — but it&#x27;s a seatbelt, not an engine.
+</div></details>
+<h2 id="ep09">Ep 9. Buy QQQM Below Its 200-Day, Trail Out With a 2% Stop</h2>
+<p><span class="stamp">BEATEN BY DOING NOTHING.</span></p>
+<p><strong>The test.</strong> The rule buys when the Nasdaq-100 closes below its 200-day EMA, arms a 2% trailing stop once price recovers 2% above it, and sits in cash otherwise. It was coded exactly as specified and run against buy-and-hold on QQQ, the longer-history twin of QQQM.</p>
+<p><strong>The data.</strong> Alpaca&#x27;s free IEX daily bars, split-adjusted, for QQQ from 2021-05 to 2026-09. That window holds the 2022 bear, the 2023-24 recovery and 2025.</p>
+<p><strong>Rerun it.</strong> Run backtest_ema_trail.py. It needs your own Alpaca market-data key in the ALPACA_KEY and ALPACA_SECRET environment variables (free IEX feed).</p>
+<p><strong>The verdict.</strong> Buy-and-hold wins, badly. The rule returned +35% against +121% for holding, and its 83% win rate doesn&#x27;t change that. It fails the bar of a MAR (yearly growth divided by the worst drop) of at least 0.50 and a Sortino of at least 1.00.</p>
+<p class="label">The numbers, quoted from the write-up:</p>
+<blockquote><p>Over a full Nasdaq-100 cycle the dip-buy-and-trail rule returned +35% while just owning the index returned +121%.</p><p>| Total return | +35.0% | +121.0% |</p><p>KPI bar (MAR ≥ 0.50 AND Sortino ≥ 1.00): FAILED — and it isn&#x27;t close.</p><p>In this window the 2022-04-06 entry did exactly that: it bought into the bear and sat 306 days at −14%</p><p>Time in the market beats timing the dip.</p></blockquote>
+<img src="https://raw.githubusercontent.com/backtest-graveyard/backtest-graveyard/main/ep09-qqqm-dip-trail/charts/chart_curve.png" alt="Ep 9 chart" loading="lazy">
+<p>Receipts: <a href="https://github.com/backtest-graveyard/backtest-graveyard/tree/main/ep09-qqqm-dip-trail">ep09-qqqm-dip-trail/</a> · Episode: <a href="https://www.youtube.com/watch?v=YAmVIgHvxWU">watch on YouTube</a></p>
+<p class="cap">Not financial advice. A backtest is a simulation of the past, not a prediction.</p>
+<details><summary>The check, run against the repo</summary><div class="out">found   ep09-qqqm-dip-trail/README.md line 3
+        Over a full Nasdaq-100 cycle the dip-buy-and-trail rule returned +35% while just owning the index returned +121%.
+found   ep09-qqqm-dip-trail/README.md line 21
+        | Total return | +35.0% | +121.0% |
+found   ep09-qqqm-dip-trail/README.md line 31
+        KPI bar (MAR ≥ 0.50 AND Sortino ≥ 1.00): FAILED — and it isn&#x27;t close.
+found   ep09-qqqm-dip-trail/README.md line 41
+        In this window the 2022-04-06 entry did exactly that: it bought into the bear and sat 306 days at −14%
+found   ep09-qqqm-dip-trail/README.md line 3
+        Time in the market beats timing the dip.
+</div></details>
+<h2 id="ep10">Ep 10. MACD + the &quot;Profitability Multiplier&quot; Volume Filter</h2>
+<p><span class="stamp">A THROTTLE, NOT AN EDGE.</span></p>
+<p><strong>The test.</strong> The claim is that a MACD crossover becomes profitable once you only take it on days when volume is at least 1.5 times its 20-day average. The full system was coded and run on 55 liquid US large-caps, then compared with the same signal without the volume filter.</p>
+<p><strong>The data.</strong> Alpaca&#x27;s free IEX daily bars, split-adjusted, for 55 liquid US large-caps from 2020-08 to 2026-09. Benchmarks are buy-and-hold SPY and an equal-weight hold of the same 55 names.</p>
+<p><strong>Rerun it.</strong> Run backtest_macd_rvol.py. It&#x27;s self-contained and needs your own Alpaca market-data key in ALPACA_KEY and ALPACA_SECRET. It prints the base table, the drop-top-5 and cost tests, the sweep and the volume isolation.</p>
+<p><strong>The verdict.</strong> It earns about nothing net of cost, +3.0% against +134.3% for buy-and-hold SPY. The volume filter took profit factor from 1.07 to 1.05 and mainly shrank the drawdown (how far underwater you go), so it&#x27;s a brake, not an engine.</p>
+<p class="label">The numbers, quoted from the write-up:</p>
+<blockquote><p>| Total return | +3.0% | +134.3% | +184.5% |</p><p>Profit factor was already 1.07 without the filter and dropped to 1.05 with it.</p><p>Remove 5 of 55 (MS, MRK, AMD, ABBV, NVDA) and the whole system flips to −10.6% (MAR −0.12).</p><p>At 2× cost it goes net-negative (−1.1%).</p><p>That is a trade-count / exposure reducer — a brake — not a profitability multiplier.</p></blockquote>
+<img src="https://raw.githubusercontent.com/backtest-graveyard/backtest-graveyard/main/ep10-macd-volume/charts/chart_isolation.png" alt="Ep 10 chart" loading="lazy">
+<p>Receipts: <a href="https://github.com/backtest-graveyard/backtest-graveyard/tree/main/ep10-macd-volume">ep10-macd-volume/</a> · Episode: <a href="https://www.youtube.com/watch?v=xfH3zOK-v2w">watch on YouTube</a></p>
+<p class="cap">Not financial advice. A backtest is a simulation of the past, not a prediction.</p>
+<details><summary>The check, run against the repo</summary><div class="out">found   ep10-macd-volume/README.md line 18
+        | Total return | +3.0% | +134.3% | +184.5% |
+found   ep10-macd-volume/README.md line 41
+        Profit factor was already 1.07 without the filter and dropped to 1.05 with it.
+found   ep10-macd-volume/README.md line 47
+        Remove 5 of 55 (MS, MRK, AMD, ABBV, NVDA) and the whole system flips to −10.6% (MAR −0.12).
+found   ep10-macd-volume/README.md line 49
+        At 2× cost it goes net-negative (−1.1%).
+found   ep10-macd-volume/README.md line 41
+        That is a trade-count / exposure reducer — a brake — not a profitability multiplier.
+</div></details>
+<h2 id="ep11">Ep 11. Dollar-Cost Averaging vs. Lump-Sum</h2>
+<p><span class="stamp">SAFER, NOT RICHER.</span></p>
+<p><strong>The test.</strong> The standard advice says ease a windfall into the market instead of investing it all at once. At every rolling start month, investing the lump at once was compared with equal monthly buys over 6, 12 or 24 months, with the waiting cash earning the T-bill rate.</p>
+<p><strong>The data.</strong> Ken French&#x27;s monthly US total-market return plus the 1-month T-bill, 1926-07 to 2026-07. The CSV is committed, so the run is fully offline.</p>
+<p><strong>Rerun it.</strong> Run dca_lumpsum_backtest.py. It&#x27;s standard library only, reads the included CSV, and needs no credentials or downloads.</p>
+<pre><code>python3 dca_lumpsum_backtest.py</code></pre>
+<p><strong>The verdict.</strong> Lump-sum wins the money contest, about 2 of 3 times and by about +3% on average when measured fairly. DCA wins the sleep contest. It caps how much unlucky timing can cost you at the price of some expected return.</p>
+<p class="label">The numbers, quoted from the write-up:</p>
+<blockquote><p>| Lump-sum wins | 69.1% of all rolling windows | 73.4% |</p><p>Let it earn T-bills, as anyone would, and LS&#x27;s edge shrinks from +4.8% to +3.3%.</p><p>| 24 months | 73.3% | +7.03% |</p><p>Lump-sum&#x27;s worst first-year drawdown in the whole record was −65.7% (1931); the median is −7.9%.</p><p>Lump-sum wins the money contest (~2 of 3, ~+3% on average, fairly measured); DCA wins the sleep contest</p></blockquote>
+<img src="https://raw.githubusercontent.com/backtest-graveyard/backtest-graveyard/main/ep11-dca-vs-lumpsum/charts/chart_winrate.png" alt="Ep 11 chart" loading="lazy">
+<p>Receipts: <a href="https://github.com/backtest-graveyard/backtest-graveyard/tree/main/ep11-dca-vs-lumpsum">ep11-dca-vs-lumpsum/</a> · Episode: <a href="https://www.youtube.com/watch?v=DdNXfE4trE0">watch on YouTube</a></p>
+<p class="cap">Not financial advice. A backtest is a simulation of the past, not a prediction.</p>
+<details><summary>The check, run against the repo</summary><div class="out">found   ep11-dca-vs-lumpsum/README.md line 18
+        | Lump-sum wins | 69.1% of all rolling windows | 73.4% |
+found   ep11-dca-vs-lumpsum/README.md line 25
+        Let it earn T-bills, as anyone would, and LS&#x27;s edge shrinks from +4.8% to +3.3%.
+found   ep11-dca-vs-lumpsum/README.md line 35
+        | 24 months | 73.3% | +7.03% |
+found   ep11-dca-vs-lumpsum/README.md line 45
+        Lump-sum&#x27;s worst first-year drawdown in the whole record was −65.7% (1931); the median is −7.9%.
+found   ep11-dca-vs-lumpsum/README.md line 55
+        Lump-sum wins the money contest (~2 of 3, ~+3% on average, fairly measured); DCA wins the sleep contest
+</div></details>
+<h2 id="ep12">Ep 12. How Much Backtesting Is Enough?</h2>
+<p><span class="stamp">NOT THE QUESTION.</span></p>
+<p><strong>The test.</strong> The question is how many years of backtest data is enough. There&#x27;s no new backtest. It&#x27;s the six kill tests the earlier eleven episodes produced, each linked to the episode where it first fooled the channel.</p>
+<p><strong>The data.</strong> No new data. Each test points back to the receipts of the episode it came from.</p>
+<p><strong>Rerun it.</strong> No code is committed. The folder holds the write-up, a drop-the-top-five chart and a printable checklist image.</p>
+<p><strong>The verdict.</strong> It isn&#x27;t a number of years. Enough is when a result survives six honest attempts to kill it: a MAR (yearly return divided by the deepest drawdown) of at least 0.5 and a Sortino of at least 1.0 at double costs, on data the rule never saw, and still standing after deleting the five best trades.</p>
+<p class="label">The numbers, quoted from the write-up:</p>
+<blockquote><p>Verdict: it isn&#x27;t a number of years.</p><p>The gap-and-go bot: 537 trades, and 3 of them were 92% of the profit.</p><p>| gap-and-go | 1.56 | −0.30 |</p><p>15 spreads looked perfect in-sample. On data they&#x27;d never seen, zero survived.</p><p>My clever winner-picker landed at the 55th percentile of random.</p></blockquote>
+<img src="https://raw.githubusercontent.com/backtest-graveyard/backtest-graveyard/main/ep12-how-much-backtesting/charts/chart_droptop5.png" alt="Ep 12 chart" loading="lazy">
+<p>Receipts: <a href="https://github.com/backtest-graveyard/backtest-graveyard/tree/main/ep12-how-much-backtesting">ep12-how-much-backtesting/</a> · Episode: <a href="https://www.youtube.com/watch?v=nZnN7fESvZY">watch on YouTube</a></p>
+<p class="cap">Not financial advice. A backtest is a simulation of the past, not a prediction.</p>
+<details><summary>The check, run against the repo</summary><div class="out">found   ep12-how-much-backtesting/README.md line 3
+        Verdict: it isn&#x27;t a number of years.
+found   ep12-how-much-backtesting/README.md line 51
+        The gap-and-go bot: 537 trades, and 3 of them were 92% of the profit.
+found   ep12-how-much-backtesting/README.md line 45
+        | gap-and-go | 1.56 | −0.30 |
+found   ep12-how-much-backtesting/README.md line 58
+        15 spreads looked perfect in-sample. On data they&#x27;d never seen, zero survived.
+found   ep12-how-much-backtesting/README.md line 60
+        My clever winner-picker landed at the 55th percentile of random.
+</div></details>
+<h2 id="ep13">Ep 13. TQQQ &quot;Just Buy 3x And Hold&quot;</h2>
+<p><span class="stamp">WORSE RIDE.</span></p>
+<p><strong>The test.</strong> The belief is that buying TQQQ, the 3x leveraged QQQ, and holding forever means more money. Buy-and-hold TQQQ was ranked against QQQ, a 200-day trend filter and a 50/50 TQQQ/cash mix by MAR (yearly growth divided by the worst drop), then put through four kill tests.</p>
+<p><strong>The data.</strong> Split- and dividend-adjusted daily closes for TQQQ and QQQ from Alpaca SIP, 2016-01-04 to 2026-09-16. It leaves out the 2010-2015 bull run because the free full-history feeds weren&#x27;t usable, which understates TQQQ&#x27;s upside.</p>
+<p><strong>Rerun it.</strong> Run backtest_tqqq.py. The README calls it standard library only with no secrets in the file. It fetches its own prices, and the window above came from Alpaca, which needs your own keys. The curve data behind the charts is committed as curve_data.json.</p>
+<p><strong>The verdict.</strong> More money, until it isn&#x27;t. TQQQ made the most money but failed the risk bar on a −81.7% drawdown that needed +445% to recover and 1,111 days underwater. Boring unleveraged QQQ beat it on every risk-adjusted measure.</p>
+<p class="label">The numbers, quoted from the write-up:</p>
+<blockquote><p>It turned $1 into ~$32 (+3,097%) versus QQQ&#x27;s ~$7 (+596%).</p><p>Then it lost 81.7% peak-to-trough in 2022, stayed underwater for 1,111 days (3.0 years), and needed a +445% gain just to break even.</p><p>| 3 | TQQQ buy &amp; hold (the myth) | +3,097% | 38.2% | 0.47 | 1.17 | −81.7% | 2022 −79.1% | 1,111 d | 65.8% | fail |</p><p>Actual TQQQ multiple of QQQ&#x27;s total return: 5.20× — NOT 3.0×.</p><p>Boring unleveraged QQQ beat it on every risk-adjusted measure.</p></blockquote>
+<img src="https://raw.githubusercontent.com/backtest-graveyard/backtest-graveyard/main/ep13-tqqq-leverage/charts/chart_drawdown.png" alt="Ep 13 chart" loading="lazy">
+<p>Receipts: <a href="https://github.com/backtest-graveyard/backtest-graveyard/tree/main/ep13-tqqq-leverage">ep13-tqqq-leverage/</a> · Episode: <a href="https://www.youtube.com/watch?v=0FlY7uXQ3wA">watch on YouTube</a></p>
+<p class="cap">Not financial advice. A backtest is a simulation of the past, not a prediction.</p>
+<details><summary>The check, run against the repo</summary><div class="out">found   ep13-tqqq-leverage/README.md line 11
+        It turned $1 into ~$32 (+3,097%) versus QQQ&#x27;s ~$7 (+596%).
+found   ep13-tqqq-leverage/README.md line 11
+        Then it lost 81.7% peak-to-trough in 2022, stayed underwater for 1,111 days (3.0 years), and needed a +445% gain just to break even.
+found   ep13-tqqq-leverage/README.md line 19
+        | 3 | TQQQ buy &amp; hold (the myth) | +3,097% | 38.2% | 0.47 | 1.17 | −81.7% | 2022 −79.1% | 1,111 d | 65.8% | fail |
+found   ep13-tqqq-leverage/README.md line 34
+        Actual TQQQ multiple of QQQ&#x27;s total return: 5.20× — NOT 3.0×.
+found   ep13-tqqq-leverage/README.md line 64
+        Boring unleveraged QQQ beat it on every risk-adjusted measure.
+</div></details>
+<h2 id="ep14">Ep 14. RSI-2 &quot;It Calls The Bottom&quot;</h2>
+<p><span class="stamp">NOT AN EDGE.</span></p>
+<p><strong>The test.</strong> The belief is that a deeply oversold 2-period RSI calls the bottom of a selloff. Connors&#x27; RSI-2 rule was coded faithfully on 55 liquid large-caps, with no stop-loss and a 10-day max hold, then put through four kill tests.</p>
+<p><strong>The data.</strong> Split-adjusted daily closes for 55 liquid US large-caps plus SPY from Alpaca&#x27;s free IEX feed, 2020-08-03 to 2026-09-16. The window is mostly a bull market but includes the whole 2022 bear.</p>
+<p><strong>Rerun it.</strong> Run backtest_rsi2.py. It needs numpy, pandas and requests, plus your own Alpaca market-data keys. The curve data behind the charts is committed as curve_data.json.</p>
+<p><strong>The verdict.</strong> A high win rate isn&#x27;t an edge. RSI-2 wins 66.8% of its trades and still loses to equal-weight holding of the same 55 stocks on total return, CAGR, MAR and Sortino. It lost money in 2022, the one real selloff in the sample.</p>
+<p class="label">The numbers, quoted from the write-up:</p>
+<blockquote><p>But it returned +92% over the window while simply equal-weight holding the same 55 stocks returned +178%</p><p>Re-run with those 5 names removed: MAR 0.30, Sortino 0.70 → FAIL.</p><p>| 10 bps (2×, 20 bps round trip) | +66.4% | 8.7% | 0.44 | 0.96 | FAIL |</p><p>| 2022 (the one real bear market) | −$7,367 | 166 |</p><p>The average loss is 1.40× the average win.</p><p>A HIGH WIN RATE IS NOT AN EDGE.</p></blockquote>
+<img src="https://raw.githubusercontent.com/backtest-graveyard/backtest-graveyard/main/ep14-rsi2-oversold/charts/chart_winrate.png" alt="Ep 14 chart" loading="lazy">
+<p>Receipts: <a href="https://github.com/backtest-graveyard/backtest-graveyard/tree/main/ep14-rsi2-oversold">ep14-rsi2-oversold/</a> · Episode: <a href="https://www.youtube.com/watch?v=McPRIaKvU8Y">watch on YouTube</a></p>
+<p class="cap">Not financial advice. A backtest is a simulation of the past, not a prediction.</p>
+<details><summary>The check, run against the repo</summary><div class="out">found   ep14-rsi2-oversold/README.md line 12
+        But it returned +92% over the window while simply equal-weight holding the same 55 stocks returned +178%
+found   ep14-rsi2-oversold/README.md line 29
+        Re-run with those 5 names removed: MAR 0.30, Sortino 0.70 → FAIL.
+found   ep14-rsi2-oversold/README.md line 38
+        | 10 bps (2×, 20 bps round trip) | +66.4% | 8.7% | 0.44 | 0.96 | FAIL |
+found   ep14-rsi2-oversold/README.md line 70
+        | 2022 (the one real bear market) | −$7,367 | 166 |
+found   ep14-rsi2-oversold/README.md line 84
+        The average loss is 1.40× the average win.
+found   ep14-rsi2-oversold/README.md line 97
+        A HIGH WIN RATE IS NOT AN EDGE.
+</div></details>
+<h2 id="ep15">Ep 15. The Momentum Factor, Retail Edition</h2>
+<p><span class="stamp">JUST BETA.</span></p>
+<p><strong>The test.</strong> Cross-sectional momentum ranks a basket of 29 liquid names by their trailing 12-1 and 6-1 month returns, buys the top third and shorts the bottom third, and rebalances every 21 trading days. It was run as the academic long/short version and as a long-only version, judged on MAR (yearly growth divided by the worst drop) and Sortino, then re-run without the 5 best months and without Bitcoin and Ethereum.</p>
+<p><strong>The data.</strong> Yahoo Finance daily bars through yfinance, adjusted for dividends and splits, from 2010-01-04 to 2026-06-29. The basket is broad indices, sector funds, commodities, bond funds, four mega-cap stocks, and BTC and ETH.</p>
+<p><strong>Rerun it.</strong> Run xsmom_backtest.py. It needs numpy, pandas and yfinance, no accounts or keys, and it writes RESULTS.md on every run.</p>
+<pre><code>python3 xsmom_backtest.py</code></pre>
+<p><strong>The verdict.</strong> Not as a strategy a regular person should run. The long/short factor loses and can&#x27;t be traded in a normal account, and the long-only version only passes by carrying a −68% drawdown and fails on every config once the two coins come out.</p>
+<p class="label">The numbers, quoted from the write-up:</p>
+<blockquote><p>The effect is real. The version you could run is Bitcoin and Nvidia.</p><p>Drop the short side and long-only &quot;passes&quot; at MAR 0.55–0.58, but with a −68% drawdown, and it leans on five great months.</p><p>On the strongest config (6-1 long-only), zeroing the five best calendar months drops it to MAR 0.44, Sortino 0.97, back under the bar on both counts.</p><p>Remove the two coins and all four versions fail.</p><p>For a regular person: no, not as a strategy to run.</p></blockquote>
+<img src="https://raw.githubusercontent.com/backtest-graveyard/backtest-graveyard/main/ep15-momentum-factor/charts/chart_crypto.png" alt="Ep 15 chart" loading="lazy">
+<p>Receipts: <a href="https://github.com/backtest-graveyard/backtest-graveyard/tree/main/ep15-momentum-factor">ep15-momentum-factor/</a> · Episode: <a href="https://www.youtube.com/watch?v=eSLlOUJoHd4">watch on YouTube</a></p>
+<p class="cap">Not financial advice. A backtest is a simulation of the past, not a prediction.</p>
+<details><summary>The check, run against the repo</summary><div class="out">found   ep15-momentum-factor/README.md line 13
+        The effect is real. The version you could run is Bitcoin and Nvidia.
+found   ep15-momentum-factor/README.md line 13
+        Drop the short side and long-only &quot;passes&quot; at MAR 0.55–0.58, but with a −68% drawdown, and it leans on five great months.
+found   ep15-momentum-factor/README.md line 34
+        On the strongest config (6-1 long-only), zeroing the five best calendar months drops it to MAR 0.44, Sortino 0.97, back under the bar on both counts.
+found   ep15-momentum-factor/README.md line 13
+        Remove the two coins and all four versions fail.
+found   ep15-momentum-factor/README.md line 57
+        For a regular person: no, not as a strategy to run.
+</div></details>
+<h2 id="ep16">Ep 16. The Golden Cross (50/200)</h2>
+<p><span class="stamp">JUST A SEATBELT.</span></p>
+<p><strong>The test.</strong> Hold the market when its 50-day moving average is above the 200-day, sit in T-bills when it crosses back below. It was compared with buy-and-hold over a century on MAR (yearly growth divided by the worst drop), then checked bear by bear, against other average pairs, and against a one-line price-above-200-day rule.</p>
+<p><strong>The data.</strong> Daily total returns of the whole US stock market from the Fama-French research factors in Ken French&#x27;s data library, with the 1-month T-bill as the cash rate. The window runs 1926-07-01 to 2026-07-31.</p>
+<p><strong>Rerun it.</strong> Run backtest_golden_cross.py. It&#x27;s standard library Python with no keys or accounts, downloads the Fama-French file on first run, and writes curve_data.json.</p>
+<pre><code>python3 backtest_golden_cross.py</code></pre>
+<p><strong>The verdict.</strong> A seatbelt, not an engine. It made less money than buy-and-hold, cut the slow bear markets down, did nothing in the fast 2020 crash, and the plain 200-day line did the job better.</p>
+<p class="label">The numbers, quoted from the write-up:</p>
+<blockquote><p>It loses money, it is a real seatbelt in slow crashes, and the famous version is the worst way to do it.</p><p>Over 100 years the golden cross turned $1 into ~$6,149 (CAGR 9.1%) against buy-and-hold&#x27;s ~$17,630 (CAGR 10.3%), because it sat in cash 28% of the time.</p><p>In exchange it cut 2008 to −9.7% vs −54.6% and the worst-ever drawdown to −61.7% vs −84.1%.</p><p>That single-line rule made 11.2% a year vs 9.1% with a worst drop of −33.8% vs −61.7% (MAR 0.33 vs 0.15).</p><p>A seatbelt, not an engine, and not even the best seatbelt.</p></blockquote>
+<img src="https://raw.githubusercontent.com/backtest-graveyard/backtest-graveyard/main/ep16-golden-cross/charts/chart_twist.png" alt="Ep 16 chart" loading="lazy">
+<p>Receipts: <a href="https://github.com/backtest-graveyard/backtest-graveyard/tree/main/ep16-golden-cross">ep16-golden-cross/</a> · Episode: <a href="https://www.youtube.com/watch?v=ZGzCkADCeB0">watch on YouTube</a></p>
+<p class="cap">Not financial advice. A backtest is a simulation of the past, not a prediction.</p>
+<details><summary>The check, run against the repo</summary><div class="out">found   ep16-golden-cross/README.md line 14
+        It loses money, it is a real seatbelt in slow crashes, and the famous version is the worst way to do it.
+found   ep16-golden-cross/README.md line 14
+        Over 100 years the golden cross turned $1 into ~$6,149 (CAGR 9.1%) against buy-and-hold&#x27;s ~$17,630 (CAGR 10.3%), because it sat in cash 28% of the time.
+found   ep16-golden-cross/README.md line 14
+        In exchange it cut 2008 to −9.7% vs −54.6% and the worst-ever drawdown to −61.7% vs −84.1%.
+found   ep16-golden-cross/README.md line 76
+        That single-line rule made 11.2% a year vs 9.1% with a worst drop of −33.8% vs −61.7% (MAR 0.33 vs 0.15).
+found   ep16-golden-cross/README.md line 84
+        A seatbelt, not an engine, and not even the best seatbelt.
+</div></details>
+<h2 id="ep17">Ep 17. HedgeFundie&#x27;s Excellent Adventure (HFEA)</h2>
+<p><span class="stamp">THE HEDGE BROKE.</span></p>
+<p><strong>The test.</strong> HFEA holds 55% UPRO (3x the S&amp;P 500) and 45% TMF (3x long Treasuries), rebalanced quarterly, on the idea that the bond leg cushions stock crashes. It was run on the real funds and on a simulated version back through the 1962–1981 rate rise, ranked on MAR (yearly growth divided by the worst drop) against the S&amp;P and a 60/40 mix.</p>
+<p><strong>The data.</strong> The real funds come from Alpaca SIP daily total-return closes, 2016-01-04 to 2026-09-17. The simulation uses the Fama-French US market and a long-Treasury index built from FRED&#x27;s 10-year yield, 1962-01-02 to 2026-07-31.</p>
+<p><strong>Rerun it.</strong> Run backtest_hfea.py. It&#x27;s standard library Python, but the real-fund part needs your own free Alpaca market-data key. The FRED and Fama-French data download with no key.</p>
+<pre><code>python3 backtest_hfea.py</code></pre>
+<p><strong>The verdict.</strong> The hedge broke. In the real record HFEA made about the same money as the S&amp;P with about twice the drawdown, and in 2022 both legs fell together. Plain 60/40 won on risk-adjusted return in both windows.</p>
+<p class="label">The numbers, quoted from the write-up:</p>
+<blockquote><p>Same money as the S&amp;P, twice the crash, and the hedge broke in 2022.</p><p>In the real 2016+ record HFEA turned $1 into $4.65 against plain S&amp;P buy-and-hold&#x27;s $4.46.</p><p>In 2022 both legs fell together: UPRO −56.8%, TMF −72.6%, HFEA −64.1%, because the daily stock/bond correlation went from −0.34 (2016–19) to +0.08 (2022).</p><p>Run the sim back through the 1962–1981 rate rise and HFEA made +68.9% in twenty years while plain stocks made +272%.</p><p>THE HEDGE BROKE. HFEA is a leveraged bet on the 40-year bond bull, and the bull ended.</p></blockquote>
+<img src="https://raw.githubusercontent.com/backtest-graveyard/backtest-graveyard/main/ep17-hfea-leverage/charts/chart_2022.png" alt="Ep 17 chart" loading="lazy">
+<p>Receipts: <a href="https://github.com/backtest-graveyard/backtest-graveyard/tree/main/ep17-hfea-leverage">ep17-hfea-leverage/</a> · Episode: <a href="https://www.youtube.com/watch?v=uHvST5AaKwo">watch on YouTube</a></p>
+<p class="cap">Not financial advice. A backtest is a simulation of the past, not a prediction.</p>
+<details><summary>The check, run against the repo</summary><div class="out">found   ep17-hfea-leverage/README.md line 17
+        Same money as the S&amp;P, twice the crash, and the hedge broke in 2022.
+found   ep17-hfea-leverage/README.md line 17
+        In the real 2016+ record HFEA turned $1 into $4.65 against plain S&amp;P buy-and-hold&#x27;s $4.46.
+found   ep17-hfea-leverage/README.md line 17
+        In 2022 both legs fell together: UPRO −56.8%, TMF −72.6%, HFEA −64.1%, because the daily stock/bond correlation went from −0.34 (2016–19) to +0.08 (2022).
+found   ep17-hfea-leverage/README.md line 17
+        Run the sim back through the 1962–1981 rate rise and HFEA made +68.9% in twenty years while plain stocks made +272%.
+found   ep17-hfea-leverage/README.md line 141
+        THE HEDGE BROKE. HFEA is a leveraged bet on the 40-year bond bull, and the bull ended.
+</div></details>
+<h2 id="ep18">Ep 18. Covered-Call Income ETFs</h2>
+<p><span class="stamp">YOUR OWN MONEY.</span></p>
+<p><strong>The test.</strong> The covered-call income funds QYLD, XYLD, RYLD, JEPI and JEPQ were each held against their own index over identical dates, comparing total return with share price. A DIY test held the index and sold shares for the exact same income to see what was left.</p>
+<p><strong>The data.</strong> Alpaca SIP daily bars, both total return and raw share price for each fund, with QQQ or SPY as the index. Windows start between 2016-01-04 and 2022-05-04 depending on when each fund launched, and all end 2026-09-17.</p>
+<p><strong>Rerun it.</strong> Run backtest_covered_calls.py. It&#x27;s standard library Python but needs your own free Alpaca market-data key.</p>
+<pre><code>python3 backtest_covered_calls.py</code></pre>
+<p><strong>The verdict.</strong> The yield is real, the return isn&#x27;t. Every fund trailed its own index, part of the payout was principal coming back, and holding the index while selling shares for the same cash left more money every time. The one real benefit is a smoother ride.</p>
+<p class="label">The numbers, quoted from the write-up:</p>
+<blockquote><p>The yield is real. The return isn&#x27;t.</p><p>Flagship case: $10,000 in QYLD grew to $26,315. The same $10,000 in QQQ grew to $70,742 over the identical decade.</p><p>And the &quot;12% yield&quot; is partly your own money: QYLD&#x27;s share price fell −19.9% (from $23.12 to $18.51) across ten years of paying about 12%.</p><p>QYLD&#x27;s holder took $12,412 of income and had $8,006 of fund left. Someone who held QQQ and sold shares for the same $12,412 had $33,015 left.</p><p>PAID WITH YOUR OWN MONEY. The yield is real, the return isn&#x27;t.</p></blockquote>
+<img src="https://raw.githubusercontent.com/backtest-graveyard/backtest-graveyard/main/ep18-covered-call-etfs/charts/chart_gap.png" alt="Ep 18 chart" loading="lazy">
+<p>Receipts: <a href="https://github.com/backtest-graveyard/backtest-graveyard/tree/main/ep18-covered-call-etfs">ep18-covered-call-etfs/</a> · Episode: <a href="https://www.youtube.com/watch?v=vXzpa4JkChg">watch on YouTube</a></p>
+<p class="cap">Not financial advice. A backtest is a simulation of the past, not a prediction.</p>
+<details><summary>The check, run against the repo</summary><div class="out">found   ep18-covered-call-etfs/README.md line 23
+        The yield is real. The return isn&#x27;t.
+found   ep18-covered-call-etfs/README.md line 23
+        Flagship case: $10,000 in QYLD grew to $26,315. The same $10,000 in QQQ grew to $70,742 over the identical decade.
+found   ep18-covered-call-etfs/README.md line 23
+        And the &quot;12% yield&quot; is partly your own money: QYLD&#x27;s share price fell −19.9% (from $23.12 to $18.51) across ten years of paying about 12%.
+found   ep18-covered-call-etfs/README.md line 23
+        QYLD&#x27;s holder took $12,412 of income and had $8,006 of fund left. Someone who held QQQ and sold shares for the same $12,412 had $33,015 left.
+found   ep18-covered-call-etfs/README.md line 110
+        PAID WITH YOUR OWN MONEY. The yield is real, the return isn&#x27;t.
+</div></details>
+<h2 id="ep19">Ep 19. Sell in May and Go Away</h2>
+<p><span class="stamp">STAY IN MAY.</span></p>
+<p><strong>The test.</strong> Hold the market November through April and sit in T-bills May through October, every year, against plain buy and hold. Kill tests checked whether summer is actually negative, how much of the gap comes from a few crash years, whether the edge faded after it got famous, and what trading twice a year costs.</p>
+<p><strong>The data.</strong> Daily total returns of the US stock market from the Fama-French research factors in Ken French&#x27;s data library, with the 1-month T-bill as cash. The window runs 1926-07-01 to 2026-07-31.</p>
+<p><strong>Rerun it.</strong> Run backtest_sell_in_may.py. It&#x27;s standard library Python with no key needed. If the Fama-French download fails it falls back to Alpaca data, which needs your own key and only covers 2016 on.</p>
+<pre><code>python3 backtest_sell_in_may.py</code></pre>
+<p><strong>The verdict.</strong> A real season you shouldn&#x27;t trade. Summer is the weaker half but still positive, so sitting in cash every summer cost about 1.8% a year and most of a century&#x27;s wealth for a modest drawdown cut.</p>
+<p class="label">The numbers, quoted from the write-up:</p>
+<blockquote><p>The season is real. The trade is not.</p><p>It averaged +3.9% and was up in 73% of years.</p><p>Over the century that turned $1 into ~$3,502 against buy and hold&#x27;s ~$17,630, so sitting in cash half of every year kept you just ~20% of the wealth.</p><p>Removing just 3 of 101 summers erases 26.8% of the entire seasonal edge.</p><p>A REAL SEASON YOU SHOULDN&#x27;T TRADE.</p><p>Don&#x27;t sell in May. At most, buy in November.</p></blockquote>
+<img src="https://raw.githubusercontent.com/backtest-graveyard/backtest-graveyard/main/ep19-sell-in-may/charts/chart_seasons.png" alt="Ep 19 chart" loading="lazy">
+<p>Receipts: <a href="https://github.com/backtest-graveyard/backtest-graveyard/tree/main/ep19-sell-in-may">ep19-sell-in-may/</a> · Episode: <a href="https://www.youtube.com/watch?v=IAjW0ItoAzU">watch on YouTube</a></p>
+<p class="cap">Not financial advice. A backtest is a simulation of the past, not a prediction.</p>
+<details><summary>The check, run against the repo</summary><div class="out">found   ep19-sell-in-may/README.md line 13
+        The season is real. The trade is not.
+found   ep19-sell-in-may/README.md line 13
+        It averaged +3.9% and was up in 73% of years.
+found   ep19-sell-in-may/README.md line 13
+        Over the century that turned $1 into ~$3,502 against buy and hold&#x27;s ~$17,630, so sitting in cash half of every year kept you just ~20% of the wealth.
+found   ep19-sell-in-may/README.md line 62
+        Removing just 3 of 101 summers erases 26.8% of the entire seasonal edge.
+found   ep19-sell-in-may/README.md line 102
+        A REAL SEASON YOU SHOULDN&#x27;T TRADE.
+found   ep19-sell-in-may/README.md line 102
+        Don&#x27;t sell in May. At most, buy in November.
+</div></details>
+<h2 id="ep20">Ep 20. 4-Hour vs Daily, Crypto: The Re-Test</h2>
+<p><span class="stamp">REVERSED.</span></p>
+<p><strong>The test.</strong> A long-only breakout trend follower (buy on a new high close, exit on a trailing stop or a new low close) ran on BTC and ETH with identical rules on daily and 4-hour bars, with the stop width held to the same calendar days on both. It re-tests a May 2026 research note that said the daily won, and works out why the answer flipped.</p>
+<p><strong>The data.</strong> Alpaca crypto bars for BTC/USD and ETH/USD, 2021-09-16 to 2026-09-16, with 0.10% slippage per side on every fill.</p>
+<p><strong>Rerun it.</strong> You can&#x27;t fully. run_ep13.py imports private modules that aren&#x27;t published, so the results are checkable only from stats_full.json and the logs in the folder.</p>
+<p><strong>The verdict.</strong> Reversed. The 4-hour beat the daily on every setting, but Ethereum did most of the work, Bitcoin leaned on one trade, the 4-hour wasn&#x27;t charged for trading about 3 times as often, and it&#x27;s one five-year window. The old daily-wins note was wrong because its Ethereum 4-hour download was cut short.</p>
+<p class="label">The numbers, quoted from the write-up:</p>
+<blockquote><p>The 4-hour won, and it wasn&#x27;t close.</p><p>+$82,798 vs +$54,489 over five years, MAR 0.64 vs 0.32, Sortino 1.76 vs 0.92, and a shallower worst drop, 9.4% vs 12.7%.</p><p>Every 4-hour setting beat every daily setting on MAR.</p><p>The May 4-hour run sat on an ETH/USD 4-hour download that stopped at 2021-04-28, about 4 months of a 5-year test.</p><p>Take that one trade out and the BTC 4-hour book is down about $14,560.</p><p>REVERSED. Should you believe the 4-hour beats the daily? Not the way it&#x27;s sold.</p></blockquote>
+<img src="https://raw.githubusercontent.com/backtest-graveyard/backtest-graveyard/main/ep20-crypto-4h-vs-daily/charts/chart_flip.png" alt="Ep 20 chart" loading="lazy">
+<p>Receipts: <a href="https://github.com/backtest-graveyard/backtest-graveyard/tree/main/ep20-crypto-4h-vs-daily">ep20-crypto-4h-vs-daily/</a> · Episode: <a href="https://www.youtube.com/watch?v=FhLEjiG4i68">watch on YouTube</a></p>
+<p class="cap">Not financial advice. A backtest is a simulation of the past, not a prediction.</p>
+<details><summary>The check, run against the repo</summary><div class="out">found   ep20-crypto-4h-vs-daily/README.md line 20
+        The 4-hour won, and it wasn&#x27;t close.
+found   ep20-crypto-4h-vs-daily/README.md line 20
+        +$82,798 vs +$54,489 over five years, MAR 0.64 vs 0.32, Sortino 1.76 vs 0.92, and a shallower worst drop, 9.4% vs 12.7%.
+found   ep20-crypto-4h-vs-daily/README.md line 46
+        Every 4-hour setting beat every daily setting on MAR.
+found   ep20-crypto-4h-vs-daily/README.md line 72
+        The May 4-hour run sat on an ETH/USD 4-hour download that stopped at 2021-04-28, about 4 months of a 5-year test.
+found   ep20-crypto-4h-vs-daily/README.md line 93
+        Take that one trade out and the BTC 4-hour book is down about $14,560.
+found   ep20-crypto-4h-vs-daily/README.md line 111
+        REVERSED. Should you believe the 4-hour beats the daily? Not the way it&#x27;s sold.
+</div></details>
+<h2 id="ep21">Ep 21. Buffett&#x27;s Rules, Tested</h2>
+<p><span class="stamp">NOT VALIDATED.</span></p>
+<p><strong>The test.</strong> A Buffett-style screen with hard quality gates, a quality score and a price score picked the top 15 S&amp;P 500 names each year, equal weight, rebalanced annually. The kill test removed the best 5 names to see whether a few big winners carried the result.</p>
+<p><strong>The data.</strong> Fundamentals from SEC EDGAR, point-in-time by filing date, with daily closes for prices, 2015-01-02 to 2025-01-02. The universe is today&#x27;s S&amp;P 500, so it&#x27;s survivorship-biased.</p>
+<p><strong>Rerun it.</strong> The code isn&#x27;t committed. It shares scoring code with a private screener, so the folder holds the charts and results.json, and the results are checkable only from those numbers.</p>
+<p><strong>The verdict.</strong> Not validated, not disproven. It passes the headline bar but fails the kill test, and the survivorship-biased universe makes the results an upper bound. It&#x27;s kept as a discovery tool, with no capital.</p>
+<p class="label">The numbers, quoted from the write-up:</p>
+<blockquote><p>not validated, not disproven. Passes the headline bar, fails the kill-test, and the universe is survivorship-biased.</p><p>| Screener | 21.44% | −35.15% | 0.61 | 1.31 | +595.6% |</p><p>| Screener, best 5 names removed | 17.66% | −37.42% | 0.47 | 1.14 | +407.0% |</p><p>Requiring 5 years of filing history removed it and cost 2.7 points of CAGR and 0.11 of MAR.</p><p>Call: not validated, no capital. Kept as a discovery tool that produces a short list for human review.</p></blockquote>
+<img src="https://raw.githubusercontent.com/backtest-graveyard/backtest-graveyard/main/ep21-buffett-screener/charts/chart_killtest.png" alt="Ep 21 chart" loading="lazy">
+<p>Receipts: <a href="https://github.com/backtest-graveyard/backtest-graveyard/tree/main/ep21-buffett-screener">ep21-buffett-screener/</a> · Episode: <a href="https://www.youtube.com/watch?v=SajVInkvCTQ">watch on YouTube</a></p>
+<p class="cap">Not financial advice. A backtest is a simulation of the past, not a prediction.</p>
+<details><summary>The check, run against the repo</summary><div class="out">found   ep21-buffett-screener/README.md line 4
+        not validated, not disproven. Passes the headline bar, fails the kill-test, and the universe is survivorship-biased.
+found   ep21-buffett-screener/README.md line 26
+        | Screener | 21.44% | −35.15% | 0.61 | 1.31 | +595.6% |
+found   ep21-buffett-screener/README.md line 27
+        | Screener, best 5 names removed | 17.66% | −37.42% | 0.47 | 1.14 | +407.0% |
+found   ep21-buffett-screener/README.md line 48
+        Requiring 5 years of filing history removed it and cost 2.7 points of CAGR and 0.11 of MAR.
+found   ep21-buffett-screener/README.md line 76
+        Call: not validated, no capital. Kept as a discovery tool that produces a short list for human review.
+</div></details>
+<h2>The tally</h2>
+<p>One line to confirm the whole notebook against the repo.</p>
+<details><summary>The check, run against the repo</summary><div class="out">112 of 112 quoted figures found in the committed write-ups.
+</div></details>
+<p>Found an error? Open an issue on the receipts repo. Corrections get pinned.</p>
+<p class="cap">Not financial advice. A backtest is a simulation of the past, not a prediction.</p>
+</main></body></html>
