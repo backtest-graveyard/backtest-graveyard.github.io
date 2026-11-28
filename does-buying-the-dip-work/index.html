@@ -47,6 +47,8 @@ figure img { display:block; width:100%; height:auto; border-radius:4px; backgrou
       background:var(--bg); border:1px solid var(--line); border-radius:6px; }
 .signup button { padding:.55rem 1rem; font:inherit; font-weight:600; color:#fff; background:var(--accent);
       border:0; border-radius:6px; cursor:pointer; }
+.signup .hp { position:absolute; left:-9999px; width:1px; height:1px; overflow:hidden; }
+.signup [role=status]:empty { display:none; }
 footer { margin-top:3rem; padding-top:1rem; border-top:1px solid var(--line);
          color:var(--muted); font-size:.85rem; }
 </style></head>
@@ -61,7 +63,35 @@ footer { margin-top:3rem; padding-top:1rem; border-top:1px solid var(--line);
 <h2>The receipts</h2>
 <p>The code and result files behind every number on this page.</p>
 <a class="dl" href="https://github.com/backtest-graveyard/backtest-graveyard/tree/main/ep09-qqqm-dip-trail">Browse the receipts for this episode</a>
-
+<section class="signup" aria-label="Email sign-up">
+<p><strong>Get the next autopsy by email.</strong> <span class="cap">The full receipts notebook, and the next test before it airs. Unsubscribe any time. Not financial advice.</span></p>
+<form action="https://graveyard-list.graveyard-list.workers.dev/api/subscribe" method="post" data-signup>
+<input type="hidden" name="source" value="/does-buying-the-dip-work/">
+<div class="hp" aria-hidden="true"><label>Leave this empty <input type="text" name="website" tabindex="-1" autocomplete="off"></label></div>
+<input type="email" name="email" placeholder="you@example.com" aria-label="Email address" autocomplete="email" required>
+<button type="submit">Send it to me</button>
+</form>
+<p class="cap" role="status" data-signup-msg></p>
+<p class="cap"><a href="/email-privacy.html">What gets stored, and how to leave</a></p>
+<script>
+(function () {
+  var f = document.currentScript.parentNode.querySelector("form[data-signup]");
+  var m = f.parentNode.querySelector("[data-signup-msg]");
+  f.addEventListener("submit", function (ev) {
+    ev.preventDefault();
+    var b = f.querySelector("button"); b.disabled = true; m.textContent = "Sending...";
+    fetch(f.action, { method: "POST", headers: { accept: "application/json" },
+                      body: new URLSearchParams(new FormData(f)) })
+      .then(function (r) { return r.json(); })
+      .then(function (d) {
+        if (d.ok) { f.hidden = true; m.textContent = "You're on the list. The next one lands before it airs."; }
+        else { b.disabled = false; m.textContent = d.error || "That didn't work. Try again."; }
+      })
+      .catch(function () { b.disabled = false; m.textContent = "Couldn't reach the list. Try again in a minute."; });
+  });
+})();
+</script>
+</section>
 <h2>Related autopsies</h2>
 <ul>
 <li><a href="/does-the-macd-volume-strategy-work/">Does a MACD Volume Filter Work? 6 Years Tested</a><span class="cap">Verdict: A THROTTLE, NOT AN EDGE.</span></li>

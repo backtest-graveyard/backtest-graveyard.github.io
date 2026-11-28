@@ -32,7 +32,7 @@ MAX_W = 1200
 # form, no email-privacy page and nothing else of the list is published anywhere. Set it to
 # the deployed Worker's URL (~/Channel/email_signup_worker, e.g.
 # "https://graveyard-list.<sub>.workers.dev") only after that Worker answers, then rebuild.
-SIGNUP_ENDPOINT = ""
+SIGNUP_ENDPOINT = "https://graveyard-list.graveyard-list.workers.dev"
 HOME_SIGNUP_START, HOME_SIGNUP_END = "<!-- signup:start -->", "<!-- signup:end -->"
 
 BUCKETS = [("DEAD", "Dead", "The edge was not there, or did not survive costs."),

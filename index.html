@@ -113,7 +113,37 @@ trades.</li>
 <li><a href="https://www.youtube.com/@TheBacktestGraveyard">The Backtest Graveyard on YouTube</a></li>
 <li><a href="/episodes/">Every episode, sorted by verdict</a></li>
 </ul>
-<!-- signup:start --><!-- signup:end -->
+<!-- signup:start -->
+<section class="signup" aria-label="Email sign-up">
+<p><strong>Get the next autopsy by email.</strong> <span class="cap">The full receipts notebook, and the next test before it airs. Unsubscribe any time. Not financial advice.</span></p>
+<form action="https://graveyard-list.graveyard-list.workers.dev/api/subscribe" method="post" data-signup>
+<input type="hidden" name="source" value="/">
+<div class="hp" aria-hidden="true"><label>Leave this empty <input type="text" name="website" tabindex="-1" autocomplete="off"></label></div>
+<input type="email" name="email" placeholder="you@example.com" aria-label="Email address" autocomplete="email" required>
+<button type="submit">Send it to me</button>
+</form>
+<p class="cap" role="status" data-signup-msg></p>
+<p class="cap"><a href="/email-privacy.html">What gets stored, and how to leave</a></p>
+<script>
+(function () {
+  var f = document.currentScript.parentNode.querySelector("form[data-signup]");
+  var m = f.parentNode.querySelector("[data-signup-msg]");
+  f.addEventListener("submit", function (ev) {
+    ev.preventDefault();
+    var b = f.querySelector("button"); b.disabled = true; m.textContent = "Sending...";
+    fetch(f.action, { method: "POST", headers: { accept: "application/json" },
+                      body: new URLSearchParams(new FormData(f)) })
+      .then(function (r) { return r.json(); })
+      .then(function (d) {
+        if (d.ok) { f.hidden = true; m.textContent = "You're on the list. The next one lands before it airs."; }
+        else { b.disabled = false; m.textContent = d.error || "That didn't work. Try again."; }
+      })
+      .catch(function () { b.disabled = false; m.textContent = "Couldn't reach the list. Try again in a minute."; });
+  });
+})();
+</script>
+</section>
+<!-- signup:end -->
 
 <h2>Found an error?</h2>
 <p>Open an issue on the <a href="https://github.com/backtest-graveyard/backtest-graveyard/issues">receipts repository</a> with the run date and parameters you used.
