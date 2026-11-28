@@ -31,6 +31,15 @@ footer { margin-top:3rem; padding-top:1rem; border-top:1px solid var(--line);
       background:var(--accent); color:#fff; font-weight:600; }
 .dl:hover { text-decoration:none; opacity:.9; }
 .none { color:var(--muted); font-style:italic; }
+.signup { border:1px solid var(--line); border-radius:6px; padding:1rem; margin:2rem 0; }
+.signup p { margin:0 0 .6rem; }
+.signup form { display:flex; gap:.5rem; flex-wrap:wrap; }
+.signup input[type=email] { flex:1 1 14rem; padding:.55rem .7rem; font:inherit; color:var(--fg);
+      background:var(--bg); border:1px solid var(--line); border-radius:6px; }
+.signup button { padding:.55rem 1rem; font:inherit; font-weight:600; color:#fff; background:var(--accent);
+      border:0; border-radius:6px; cursor:pointer; }
+.signup .hp { position:absolute; left:-9999px; width:1px; height:1px; overflow:hidden; }
+.signup [role=status]:empty { display:none; }
 </style></head>
 <body><main>
 
@@ -104,6 +113,7 @@ trades.</li>
 <li><a href="https://www.youtube.com/@TheBacktestGraveyard">The Backtest Graveyard on YouTube</a></li>
 <li><a href="/episodes/">Every episode, sorted by verdict</a></li>
 </ul>
+<!-- signup:start --><!-- signup:end -->
 
 <h2>Found an error?</h2>
 <p>Open an issue on the <a href="https://github.com/backtest-graveyard/backtest-graveyard/issues">receipts repository</a> with the run date and parameters you used.

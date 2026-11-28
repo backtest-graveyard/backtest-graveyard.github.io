@@ -28,12 +28,12 @@ RECEIPTS = "https://github.com/backtest-graveyard/backtest-graveyard/tree/main/"
 YT_CHANNEL = "https://www.youtube.com/@TheBacktestGraveyard"
 MAX_W = 1200
 
-# Email sign-up. Leave SIGNUP_ACTION empty and no form is rendered anywhere.
-# SIGNUP_PROVIDER picks the field name the provider expects for the address.
-SIGNUP_PROVIDER = ""          # "buttondown" | "kit" | "mailerlite" | "beehiiv"
-SIGNUP_ACTION = ""            # the provider's form POST URL
-SIGNUP_FIELDS = {"buttondown": "email", "kit": "email_address",
-                 "mailerlite": "fields[email]", "beehiiv": "email"}
+# Email sign-up ("get the next autopsy"). THE FLAG: leave SIGNUP_ENDPOINT empty and no
+# form, no email-privacy page and nothing else of the list is published anywhere. Set it to
+# the deployed Worker's URL (~/Channel/email_signup_worker, e.g.
+# "https://graveyard-list.<sub>.workers.dev") only after that Worker answers, then rebuild.
+SIGNUP_ENDPOINT = ""
+HOME_SIGNUP_START, HOME_SIGNUP_END = "<!-- signup:start -->", "<!-- signup:end -->"
 
 BUCKETS = [("DEAD", "Dead", "The edge was not there, or did not survive costs."),
            ("HALF", "Half-true", "Something real, but not the way it is sold."),
@@ -160,6 +160,8 @@ figure img { display:block; width:100%; height:auto; border-radius:4px; backgrou
       background:var(--bg); border:1px solid var(--line); border-radius:6px; }
 .signup button { padding:.55rem 1rem; font:inherit; font-weight:600; color:#fff; background:var(--accent);
       border:0; border-radius:6px; cursor:pointer; }
+.signup .hp { position:absolute; left:-9999px; width:1px; height:1px; overflow:hidden; }
+.signup [role=status]:empty { display:none; }
 footer { margin-top:3rem; padding-top:1rem; border-top:1px solid var(--line);
          color:var(--muted); font-size:.85rem; }
 """
@@ -173,17 +175,74 @@ simulations are not predictions. <a href="/">Links &amp; corrections</a> &middot
 e = html.escape
 
 
-def signup_box():
-    """The Ledger sign-up. Returns '' (no box at all) until a form action is configured."""
-    if not SIGNUP_ACTION or SIGNUP_PROVIDER not in SIGNUP_FIELDS:
+def signup_box(source):
+    """The 'next autopsy' sign-up. Returns '' (no box at all) while SIGNUP_ENDPOINT is empty."""
+    if not SIGNUP_ENDPOINT:
         return ""
+    action = SIGNUP_ENDPOINT.rstrip("/") + "/api/subscribe"
     return f"""<section class="signup" aria-label="Email sign-up">
-<p><strong>The Ledger: one verdict a week.</strong> <span class="cap">One email, one strategy, the number that killed it. Unsubscribe any time.</span></p>
-<form action="{e(SIGNUP_ACTION)}" method="post">
-<input type="email" name="{e(SIGNUP_FIELDS[SIGNUP_PROVIDER])}" placeholder="you@example.com" aria-label="Email address" required>
-<button type="submit">Subscribe</button>
+<p><strong>Get the next autopsy by email.</strong> <span class="cap">The full receipts notebook, and the next test before it airs. Unsubscribe any time. Not financial advice.</span></p>
+<form action="{e(action)}" method="post" data-signup>
+<input type="hidden" name="source" value="{e(source)}">
+<div class="hp" aria-hidden="true"><label>Leave this empty <input type="text" name="website" tabindex="-1" autocomplete="off"></label></div>
+<input type="email" name="email" placeholder="you@example.com" aria-label="Email address" autocomplete="email" required>
+<button type="submit">Send it to me</button>
 </form>
+<p class="cap" role="status" data-signup-msg></p>
+<p class="cap"><a href="/email-privacy.html">What gets stored, and how to leave</a></p>
+<script>
+(function () {{
+  var f = document.currentScript.parentNode.querySelector("form[data-signup]");
+  var m = f.parentNode.querySelector("[data-signup-msg]");
+  f.addEventListener("submit", function (ev) {{
+    ev.preventDefault();
+    var b = f.querySelector("button"); b.disabled = true; m.textContent = "Sending...";
+    fetch(f.action, {{ method: "POST", headers: {{ accept: "application/json" }},
+                      body: new URLSearchParams(new FormData(f)) }})
+      .then(function (r) {{ return r.json(); }})
+      .then(function (d) {{
+        if (d.ok) {{ f.hidden = true; m.textContent = "You're on the list. The next one lands before it airs."; }}
+        else {{ b.disabled = false; m.textContent = d.error || "That didn't work. Try again."; }}
+      }})
+      .catch(function () {{ b.disabled = false; m.textContent = "Couldn't reach the list. Try again in a minute."; }});
+  }});
+}})();
+</script>
 </section>"""
+
+
+EMAIL_PRIVACY_BODY = """<p class="crumb"><a href="/episodes/">&larr; All episodes</a></p>
+<h1>The email list: what's kept and how to leave</h1>
+<p class="sub">The Backtest Graveyard &mdash; last updated 27 November 2026</p>
+
+<h2>What's collected</h2>
+<ul>
+<li><strong>Your email address.</strong> That's the only thing you type in.</li>
+<li><strong>When you signed up, and on which page.</strong> So there's a record that you asked for it.</li>
+<li><strong>Which version of the sign-up wording you saw.</strong> Same reason.</li>
+<li><strong>A scrambled (salted, one-way hashed) copy of your IP address.</strong> Used only to stop
+one machine from flooding the form. The real IP is never stored. Sign-up attempts used for that
+limit are deleted after 24 hours.</li>
+</ul>
+
+<h2>Why</h2>
+<p>To send you what the form offers: the receipts notebook and the next test before it airs.
+Nothing else.</p>
+
+<h2>Who else sees it</h2>
+<p>Nobody buys it and nobody is given it. The list is never sold, rented, traded or shared.
+It's stored with Cloudflare, which runs the sign-up form's backend, and when an email goes out
+your address passes through the service that delivers it. That's the whole list of who touches it.</p>
+
+<h2>How to leave</h2>
+<p>Every email has an unsubscribe link at the bottom. One click and you're off. No
+login and no &ldquo;are you sure&rdquo; maze. You can also reply to any email and say
+unsubscribe. Either way it's done within 10 business days, usually at once.</p>
+<p>Want your address deleted outright rather than just unsubscribed? Reply to any email and say so.</p>
+
+<h2>Not financial advice</h2>
+<p>Nothing in the emails or on this site is financial advice. All results are historical
+simulations, and simulations are not predictions.</p>"""
 
 
 def page(title, desc, canonical, body, jsonld=None):
@@ -272,7 +331,7 @@ def main():
 <h2>The receipts</h2>
 <p>The code and result files behind every number on this page.</p>
 <a class="dl" href="{RECEIPTS}{rfolder}">Browse the receipts for this episode</a>
-{signup_box()}
+{signup_box(f"/{slug}/")}
 <h2>Related autopsies</h2>
 <ul>
 {rel}
@@ -296,11 +355,29 @@ def main():
 <h1>Every Strategy We Backtested, Sorted by Verdict</h1>
 <p class="sub">One page per aired episode of <a href="{YT_CHANNEL}">The Backtest Graveyard</a>: the claim,
 the test, the number that decided it, and the code behind it.</p>
-{signup_box()}
+{signup_box("/episodes/")}
 {chr(10).join(sections)}"""
     (ROOT / "episodes").mkdir(exist_ok=True)
     (ROOT / "episodes/index.html").write_text(
         page("Trading Strategy Backtests, Sorted by Verdict | The Backtest Graveyard", idx_desc, idx_url, body))
+
+    # home page (hand-written): the box lives between two marker comments
+    home = ROOT / "index.html"
+    h = home.read_text()
+    i, j = h.index(HOME_SIGNUP_START) + len(HOME_SIGNUP_START), h.index(HOME_SIGNUP_END)
+    box = signup_box("/")
+    if box and ".signup " not in h:
+        sys.exit("index.html needs the .signup CSS before the flag can go on")
+    home.write_text(h[:i] + (f"\n{box}\n" if box else "") + h[j:])
+
+    # the list's privacy notice exists only while the form does
+    privacy = ROOT / "email-privacy.html"
+    if SIGNUP_ENDPOINT:
+        privacy.write_text(page("The Email List: What's Kept and How to Leave | The Backtest Graveyard",
+                                "What the Backtest Graveyard email list stores, why, and how to unsubscribe.",
+                                f"{BASE_URL}/email-privacy.html", EMAIL_PRIVACY_BODY))
+    elif privacy.exists():
+        privacy.unlink()
 
     today = date.today().isoformat()
     urls = [f"{BASE_URL}/", idx_url] + [f"{BASE_URL}/{ep[6]}/" for ep in built]
@@ -311,7 +388,7 @@ the test, the number that decided it, and the code behind it.</p>
         + "</urlset>\n")
     (ROOT / "robots.txt").write_text(f"User-agent: *\nAllow: /\n\nSitemap: {BASE_URL}/sitemap.xml\n")
     print(f"built {len(built)} episode pages, skipped {len(skipped)}; signup box "
-          f"{'ON (' + SIGNUP_PROVIDER + ')' if signup_box() else 'OFF (no SIGNUP_ACTION)'}")
+          f"{'ON -> ' + SIGNUP_ENDPOINT if SIGNUP_ENDPOINT else 'OFF (SIGNUP_ENDPOINT empty)'}")
     for ep in built:
         print(f"  /{ep[6]}/")
 
