@@ -244,5 +244,21 @@
    "The 4-hour makes 107 trades to the daily's 37",
    "49% were BULL (908)"
   ]
+ },
+ "buffett_screener": {
+  "summary": "A stock screener built on Warren Buffett's rules was backtested on today's S&P 500 (503 names) from 2015-01-02 to 2025-01-02. Each company had to clear hard gates first (ROE of at least 10%, debt/equity at most 2.0, positive earnings and free cash flow), then a quality score and a price score were multiplied, and the top 15 were held at equal weight for a year. The headline beat SPY: 21.44% a year against 13.00%, or +595.6% against +238.7%, with a MAR of 0.61 against a bar of 0.50. Removing the best 5 names dropped MAR to 0.47, under the bar. The #2 contributor was Coinbase, which wasn't in the index in any year it was held. Requiring 5 years of filing history put MAR at 0.50, and 0.43 without the best 5. The universe is survivorship-biased, so these results are an upper bound.",
+  "meta": "Buffett's rules as a stock screener beat SPY, 21.44% vs 13.00% a year, but MAR fell from 0.61 to 0.47 with the best 5 names removed. Verdict: not validated.",
+  "source_lines": [
+   "| Window | 2015-01-02 to 2025-01-02, 10 annual rebalances |",
+   "| Universe | today's S&P 500 (503 names). **Survivorship-biased** |",
+   "| Portfolio | top 15 by score among names that pass the gates, equal weight |",
+   "| Screener | 21.44% | −35.15% | 0.61 | 1.31 | +595.6% |",
+   "| Screener, best 5 names removed | 17.66% | −37.42% | **0.47** | 1.14 | +407.0% |",
+   "| SPY | 13.00% | −33.72% | 0.39 | 0.95 | +238.7% |",
+   "| 5-year filing-history filter | 18.77% | −37.25% | 0.50 | 1.15 | |",
+   "| 5-year filter, best 5 removed | 15.71% | −36.34% | **0.43** | 1.05 | |",
+   "COIN was the #2 contributor.",
+   "Universe survivorship is unfixed. Results are an upper bound."
+  ]
  }
 }

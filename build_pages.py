@@ -22,7 +22,7 @@ from PIL import Image, ImageChops
 
 ROOT = Path(__file__).resolve().parent
 CHANNEL = Path.home() / "Channel"
-SNAPSHOT = CHANNEL / "channel_status/snapshots/2026-11-24.json"
+SNAPSHOT = CHANNEL / "channel_status/snapshots/2026-11-27.json"
 BASE_URL = "https://backtest-graveyard.github.io"
 RECEIPTS = "https://github.com/backtest-graveyard/backtest-graveyard/tree/main/"
 YT_CHANNEL = "https://www.youtube.com/@TheBacktestGraveyard"
@@ -121,6 +121,10 @@ EPISODES = [
      "4-hour-vs-daily-chart-crypto",
      "Is the 4-Hour Chart Better Than the Daily for Crypto? 5 Years Tested",
      "Crypto 4-hour vs daily", ["chart_flip"], {"crypto", "trend"}),
+    (21, "buffett_screener", "ep21-buffett-screener", "SajVInkvCTQ", "HALF", "NOT VALIDATED.",
+     "does-warren-buffetts-investment-strategy-work",
+     "Does Warren Buffett's Investment Strategy Work as a Stock Screener? 10 Years Tested",
+     "Buffett screener", ["chart_killtest", "chart_ladder"], {"quant", "passive"}),
 ]
 
 CSS = """:root { color-scheme: light dark; --fg:#1a1a1a; --muted:#666; --bg:#fdfdfc;
